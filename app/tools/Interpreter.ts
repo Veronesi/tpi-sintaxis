@@ -96,6 +96,9 @@ class Interpreter {
             case Varaible.Lectura:
                 this.lectura(sentencia, success);
                 break;
+            case Varaible.Ciclo:
+                this.ciclo(sentencia, success);
+                break;
             default:
                 console.log(tree)
                 process.exit()
@@ -124,7 +127,7 @@ class Interpreter {
             }
             return 0;
         }
-
+        
         if (tree.childs[1].childs[0].symbol.toTerminal() == Terminal.epsilon)
             return this.expresion(tree.childs[0])
 
@@ -142,7 +145,6 @@ class Interpreter {
     }
 
     condicional(tree: Tree, success: Function = () => { }) {
-        //console.log(tree)
         const condicion = this.condicion(tree.getChildByName(Varaible.Condicion))
         const bloque = tree.getChildByName(Varaible.Bloque)
         if (condicion) {
@@ -163,7 +165,15 @@ class Interpreter {
             case Varaible.Expresion:
                 let expresion = this.expresion(sigCondicion.childs[0])
                 const signo = sigCondicion.childs[1].childs[0].symbol
-                let expresion2 = this.expresion(sigCondicion.childs[1].deleteChild())
+                
+                const TreeExpresion2 = new Tree({
+                    symbolGramatical: sigCondicion.childs[1].symbol,
+                    pointer: Math.random(),
+                    lexema: '',
+                    childs: [sigCondicion.childs[1].childs[1], sigCondicion.childs[1].childs[2]]
+                })
+
+                let expresion2 = this.expresion(TreeExpresion2)
                 switch (signo) {
                     case Terminal.mayor:
                         condicion = Number(expresion) > Number(expresion2)
@@ -233,6 +243,17 @@ class Interpreter {
             rl.close();
             success()
         });
+    }
+
+    ciclo(tree: Tree, success: Function = ()=>{}){
+        let condicion = this.condicion(tree.getChildByName(Varaible.Condicion))
+        const bloque = tree.getChildByName(Varaible.Bloque)
+        while(condicion){
+            this._run(bloque.childs[1])
+            condicion = this.condicion(tree.getChildByName(Varaible.Condicion))
+        }
+        
+        success()
     }
 
     /**

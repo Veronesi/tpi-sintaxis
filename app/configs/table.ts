@@ -666,7 +666,7 @@ const table: Array<Cell> = [
     /* Ciclo */
     {
         varaible: Variable.Ciclo,
-        terminal: Terminal.write,
+        terminal: Terminal.while,
         elements: [
             Terminal.while,
             Terminal.parentesisOpen,

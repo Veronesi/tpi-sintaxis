@@ -4,15 +4,11 @@ import SemanticAnalyzer from './tools/SemanticAnalyzer'
 import Interpreter from './tools/Interpreter'
 
 let lexicalAnalizer = new LexicalAnalizer(
-  `vars edad, faltaEdad
+  `vars edad
   read("cual es tu edad: ", edad);
-  if(edad > 17){
-    write("eres mayor de edad ya que tienes ", edad);
-  }else{
-    write("eres menor de edad =D, tienes ", edad);
-    faltaEdad = 18 - edad;
-    write("solo te faltan ", faltaEdad);
-    read("acepto", edad);
+  while(edad < 18){
+    write("debes ser mayor de 18, tu edad es: ", edad);
+    read("ingrese otra vez su edad: ", edad);
   };`)
 
 
