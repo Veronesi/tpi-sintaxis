@@ -8,4 +8,4 @@ const SymbolGramatical = {
  
  type SymbolGramatical = Terminal | Variable
 
-export default SymbolGramatical;
+export default SymbolGramatical

@@ -1,6 +1,32 @@
 enum Terminal {
     vars = 'vars',
-    id = 'id'
+    id = 'id',
+    coma = ',',
+    puntoYComa = ';',
+    igual = '=',
+    mas = '+',
+    menos = '-',
+    por = '*',
+    dividido = '/',
+    potencia = '**',
+    raiz = '/*',
+    parentesisOpen = '(',
+    parentesisClose = ')',
+    if = 'if',
+    else = 'else',
+    while = 'while',
+    or = 'or',
+    and = 'and',
+    not = 'not',
+    corcheteOpen = '[',
+    corcheteClose = ']',
+    signo = 'signo',
+    read = 'read',
+    write = 'write',
+    peso = '$',
+    llaveOpen = '{',
+    llaveClose = '}',
+    numero = 'numero',
 }
 
-export default Terminal;
+export default Terminal

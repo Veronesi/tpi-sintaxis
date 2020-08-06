@@ -11,4 +11,4 @@ class Tree {
     }
 }
 
-export default Tree;
+export default Tree
