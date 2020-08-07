@@ -9,5 +9,5 @@ const table_1 = __importDefault(require("./configs/table"));
 //let response = TAS(SymbolGramatical.Programa, SymbolGramatical.id)
 const tas = new tas_1.default();
 tas.load(table_1.default);
-let elem = tas.getElements(SymbolGramatical_1.default.Programa, SymbolGramatical_1.default.or);
+let elem = tas.getElements(SymbolGramatical_1.default.Programa, SymbolGramatical_1.default.id);
 console.log(elem);

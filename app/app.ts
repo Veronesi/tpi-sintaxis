@@ -7,5 +7,5 @@ import table from './configs/table'
 const tas = new TAS();
 tas.load(table);
 
-let elem = tas.getElements(SymbolGramatical.Programa, SymbolGramatical.or)
+let elem = tas.getElements(SymbolGramatical.Programa, SymbolGramatical.id)
 console.log(elem)

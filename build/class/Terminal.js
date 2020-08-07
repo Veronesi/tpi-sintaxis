@@ -26,7 +26,7 @@ var Terminal;
     Terminal["signo"] = "signo";
     Terminal["read"] = "read";
     Terminal["write"] = "write";
-    Terminal["$"] = "$";
+    Terminal["peso"] = "$";
     Terminal["llaveOpen"] = "{";
     Terminal["llaveClose"] = "}";
     Terminal["numero"] = "numero";
