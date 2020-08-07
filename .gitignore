@@ -1,11 +1,10 @@
 node_modules
-
+build
 data
 public/images/products/*.png
 public/images/services/*.png
 .DS_Store
 
-config/server.js
 
 docker-compose.yml
 
