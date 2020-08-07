@@ -14,5 +14,3 @@ node.dockerfile
 config/database.js
 
 package-lock.json
-
-package.json
