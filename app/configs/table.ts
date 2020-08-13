@@ -18,7 +18,7 @@ const table: Array<Cell> = [
     {
         varaible: Variable.DeclaracionVariables,    // <DeclaracionVariables> [A;3]
         terminal: Terminal.vars,                    // "vars" [C;1]
-        elements: [                                  // “vars” <ListaVariables> [C;3]
+        elements: [                                 // “vars” <ListaVariables> [C;3]
             Terminal.vars, 
             Variable.ListaVariables
         ]
