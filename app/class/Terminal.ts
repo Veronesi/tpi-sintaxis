@@ -27,6 +27,7 @@ enum Terminal {
     llaveOpen = '{',
     llaveClose = '}',
     numero = 'numero',
+    epsilon = 'ε'
 }
 
 export default Terminal
