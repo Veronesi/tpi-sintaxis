@@ -1,3 +1,6 @@
+/**
+ * @description lista de variables del lenguaje
+ */
 enum Varaible {
     Programa = '<Programa>',
     DeclaracionVariables = '<DeclaracionVariables>',

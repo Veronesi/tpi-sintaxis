@@ -16,21 +16,28 @@ class TAS {
     }
 
     /**
-     * 
+     * @description Carga la TAS elemento a elemento
      * @param table 
      */
     load(table: Array<Cell>) {
         table.forEach(row => {
-            // init row for this Variable
-            Object.keys(this.table).includes(row.varaible) ? null : this.table[row.varaible] = []
-            Object.keys(this.table[row.varaible]).includes(row.terminal) ? null : this.table[row.varaible][row.terminal] = [];
+
+            // Cargamos la tabla
+            Object.keys(this.table).includes(row.varaible)
+                ? null
+                // Si es la primera entrada para la variable
+                : this.table[row.varaible] = []
+
+            Object.keys(this.table[row.varaible]).includes(row.terminal)
+                ? null
+                // Si es la primera celda que se va a crear para esta variable la inicializamos
+                : this.table[row.varaible][row.terminal] = [];
 
             this.table[row.varaible][row.terminal] = row.elements
         })
     }
 
     /**
-     * 
      * @param x variable (Fila)
      * @param symbol terminal (columna)
      * @returns devuelve la produccion de la variable x que genera al terminal symbol 

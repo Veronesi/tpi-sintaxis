@@ -16,10 +16,10 @@ const table: Array<Cell> = [
             Variable.DeclaracionVariables
         ] },
     {
-        varaible: Variable.DeclaracionVariables,    // <DeclaracionVariables> [A;3]
-        terminal: Terminal.vars,                    // "vars" [C;1]
-        elements: [                                 // “vars” <ListaVariables> [C;3]
-            Terminal.vars, 
+        varaible: Variable.DeclaracionVariables,
+        terminal: Terminal.vars,
+        elements: [
+            Terminal.vars,
             Variable.ListaVariables
         ] },
     {

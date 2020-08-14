@@ -1,3 +1,6 @@
+/**
+ * @description lista de Terminales del lenguaje
+ */
 enum Terminal {
     vars = 'vars',
     id = 'id',
