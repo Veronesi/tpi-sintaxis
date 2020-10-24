@@ -1,9 +1,9 @@
 import SymbolGramatical from "./SymbolGramatical"
-import Tree from "./Tree"
 
 interface Stack {
     symbol: SymbolGramatical,
-    tree?: Tree
+    pointer: number,
+    lexema: string
 }
 
 export default Stack

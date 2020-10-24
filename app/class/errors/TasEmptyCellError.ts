@@ -8,7 +8,7 @@ class TasEmptyCellError extends Error {
 
         this.variable = variable;
         this.symbol = symbol;
-        // Set the prototype explicitly.
+        
         Object.setPrototypeOf(this, TasEmptyCellError.prototype);
     }
 

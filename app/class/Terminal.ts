@@ -1,3 +1,4 @@
+
 /**
  * @description lista de Terminales del lenguaje
  */
@@ -30,7 +31,12 @@ enum Terminal {
     llaveOpen = '{',
     llaveClose = '}',
     numero = 'numero',
-    epsilon = 'ε'
+    epsilon = 'ε',
+    DEFAULT = 'DEFAULT'
+}
+
+Terminal.toString = function(){
+    return 'terminal'
 }
 
 export default Terminal

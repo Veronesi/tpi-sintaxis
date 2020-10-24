@@ -26,7 +26,12 @@ enum Varaible {
     SigCondicion = '<SigCondicion>',
     CierreExpresion = '<CierreExpresion>',
     Lectura = '<Lectura>',
-    Escritura = '<Escritura>'
+    Escritura = '<Escritura>',
+    DEFAULT = '<DEFAULT>'
+}
+
+Varaible.toString = function(){
+    return 'variable'
 }
 
 export default Varaible
