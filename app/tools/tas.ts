@@ -4,6 +4,7 @@ import Terminal from '../class/Terminal'
 import SymbolGramatical from '../class/SymbolGramatical'
 
 import TasEmptyCellError from '../class/errors/TasEmptyCellError'
+import Varaible from '../class/Variable'
 
 class TAS {
     /**
@@ -57,6 +58,9 @@ class TAS {
 
             process.exit()
         }
+    }
+    generatePeso(x: Varaible){
+        return Object.keys(this.table[x]).includes(Terminal.peso)
     }
 }
 

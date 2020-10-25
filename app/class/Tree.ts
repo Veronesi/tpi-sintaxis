@@ -1,5 +1,11 @@
 import Stack from './Stack'
 import SymbolGramatical from './SymbolGramatical'
+import Terminal from './Terminal'
+
+interface EmptyTerminal {
+    symbol: Terminal,
+    pointer: number
+}
 
 class Tree {
     symbol: SymbolGramatical
@@ -25,6 +31,20 @@ class Tree {
             return false
         }
     }
+
+    getNextEmptyTerminal(): EmptyTerminal{
+        if(this.symbol.typeof() == 'terminal' && this.lexema == '')
+            return {symbol: this.symbol.toTerminal(), pointer: this.pointer}
+        for(let i in this.childs){
+            let child = this.childs[i].getNextEmptyTerminal()
+            if(child.pointer > -1)
+                return child
+                
+        }
+
+        return {symbol: Terminal.DEFAULT, pointer: -1}
+    }
+
     hasChild(pointer: number): boolean {
         return this.pointer == pointer ? true : (this.childs.length ? Boolean(this.childs.find(child => child.hasChild(pointer))) : false)
     }
@@ -44,4 +64,4 @@ class Tree {
 
 }
 
-export default Tree
+export {Tree, EmptyTerminal}

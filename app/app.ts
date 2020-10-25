@@ -8,14 +8,12 @@ import LexicalAnalizer from "./tools/LexicalAnalyzer"
 
 */
 
-let lexicalAnalizer = new LexicalAnalizer('vars hola, chau')
+let lexicalAnalizer = new LexicalAnalizer('vars hola hola = 4 + hola;')
 
 
-while(!lexicalAnalizer.inputString.overflow()){
+while (!lexicalAnalizer.inputString.overflow()) {
   lexicalAnalizer.parser()
 }
-
 const syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalizer.lexicals);
-syntacticAnalyzer.start()
 
-console.log(JSON.stringify(syntacticAnalyzer.derivationTree))
+syntacticAnalyzer.start()

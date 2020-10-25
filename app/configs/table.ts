@@ -385,6 +385,20 @@ const table: Array<Cell> = [
     },
     {
         varaible: Variable.Operador3,
+        terminal: Terminal.mas,
+        elements: [
+            Terminal.epsilon
+        ]
+    },
+    {
+        varaible: Variable.Operador2,
+        terminal: Terminal.mas,
+        elements: [
+            Terminal.epsilon
+        ]
+    },
+    {
+        varaible: Variable.Operador3,
         terminal: Terminal.potencia,
         elements: [
             Terminal.potencia,
