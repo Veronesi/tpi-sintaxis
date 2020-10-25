@@ -1,23 +1,36 @@
 class InputString {
-    input: Array<String>
-    constructor(str: String) {
+    input: Array<string>
+    pointer: number
+    constructor(str: string) {
         // Transformamos en un array de caracteres para facilitar su manejo
         this.input = str.split('')
+        this.pointer = 0
     }
     /**
      * @description calcula el proximo elemento y lo elimina de la cadena de entrada
      * @returns devuelve el proximo elemento de la cadena de entrada
      */
-    next(): String {
-        let charset: String = "";
+    next(): string {
+        let charset: string = "";
 
-        this.input.length
+        this.pointer < this.input.length
             ? (
-                charset = this.input[0],
-                this.input = this.input.slice(1)
+                charset = this.input[this.pointer],
+                this.pointer++
             )
             : null;
         return charset;
+    }
+    back() {
+        this.pointer--
+    }
+    overflow(): boolean {
+        return this.pointer == this.input.length
+    }
+    clearSpace(){
+        while(this.input[this.pointer] == " "){
+            this.pointer++
+        }
     }
 }
 

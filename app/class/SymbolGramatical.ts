@@ -11,7 +11,7 @@ declare global {
 }
 
 String.prototype.typeof = function () {
-  return /^<\D+>$/.test(String(this)) ? 'variable' : 'terminal';
+  return /^<\D+(?:\d+)?>$/.test(String(this)) ? 'variable' : 'terminal';
 };
 
 String.prototype.toSymbolGramatical = function(): SymbolGramatical {

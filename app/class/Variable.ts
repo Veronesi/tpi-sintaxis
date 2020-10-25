@@ -11,7 +11,7 @@ enum Varaible {
     Sentencia = '<Sentencia>',
     Asignacion = '<Asignacion>',
     Bloque = '<Bloque>',
-    Expresion = '<Expresión>',
+    Expresion = '<Expresion>',
     Operador1 = '<Operador1>',
     SiguienteSR = '<SiguienteSR>',
     Operador2 = '<Operador2>',

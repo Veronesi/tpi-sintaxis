@@ -2,17 +2,20 @@ import SymbolGramatical from './class/SymbolGramatical';
 import TAS from './tools/tas'
 import table from './configs/table'
 import SyntacticAnalyzer from "./tools/SyntacticAnalyzer"
-
-const syntacticAnalyzer = new SyntacticAnalyzer();
-
-syntacticAnalyzer.start()
+import LexicalAnalizer from "./tools/LexicalAnalyzer"
 
 /*
-const tas = new TAS();
-tas.load(table);
 
-let elem: Array<SymbolGramatical>
-elem = tas.getElements(SymbolGramatical.Programa, SymbolGramatical.vars)
-let elem2 = tas.getElements(SymbolGramatical.DeclaracionVariables, SymbolGramatical.vars)
-console.log(elem2)
 */
+
+let lexicalAnalizer = new LexicalAnalizer('vars hola, chau')
+
+
+while(!lexicalAnalizer.inputString.overflow()){
+  lexicalAnalizer.parser()
+}
+
+const syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalizer.lexicals);
+syntacticAnalyzer.start()
+
+console.log(JSON.stringify(syntacticAnalyzer.derivationTree))

@@ -82,8 +82,8 @@ const table: Array<Cell> = [
         terminal: Terminal.id,
         elements: [
             Variable.Sentencia,
-            Variable.CuerpoFin,
-            Terminal.puntoYComa
+            Terminal.puntoYComa,
+            Variable.CuerpoFin
         ]
     },
     {
@@ -91,8 +91,8 @@ const table: Array<Cell> = [
         terminal: Terminal.if,
         elements: [
             Variable.Sentencia,
-            Variable.CuerpoFin,
-            Terminal.puntoYComa
+            Terminal.puntoYComa,
+            Variable.CuerpoFin
         ]
     },
     {
@@ -100,8 +100,8 @@ const table: Array<Cell> = [
         terminal: Terminal.while,
         elements: [
             Variable.Sentencia,
-            Variable.CuerpoFin,
-            Terminal.puntoYComa
+            Terminal.puntoYComa,
+            Variable.CuerpoFin
         ]
     },
     {
@@ -109,8 +109,8 @@ const table: Array<Cell> = [
         terminal: Terminal.read,
         elements: [
             Variable.Sentencia,
-            Variable.CuerpoFin,
-            Terminal.puntoYComa
+            Terminal.puntoYComa,
+            Variable.CuerpoFin
         ]
     },
     {
@@ -118,8 +118,8 @@ const table: Array<Cell> = [
         terminal: Terminal.write,
         elements: [
             Variable.Sentencia,
-            Variable.CuerpoFin,
-            Terminal.puntoYComa
+            Terminal.puntoYComa,
+            Variable.CuerpoFin
         ]
     },
     {
@@ -127,8 +127,8 @@ const table: Array<Cell> = [
         terminal: Terminal.id,
         elements: [
             Variable.Sentencia,
-            Variable.CuerpoFin,
-            Terminal.puntoYComa
+            Terminal.puntoYComa,
+            Variable.CuerpoFin
         ]
     },
     {
@@ -136,8 +136,8 @@ const table: Array<Cell> = [
         terminal: Terminal.if,
         elements: [
             Variable.Sentencia,
-            Variable.CuerpoFin,
-            Terminal.puntoYComa
+            Terminal.puntoYComa,
+            Variable.CuerpoFin
         ]
     },
     {
@@ -145,8 +145,8 @@ const table: Array<Cell> = [
         terminal: Terminal.while,
         elements: [
             Variable.Sentencia,
-            Variable.CuerpoFin,
-            Terminal.puntoYComa
+            Terminal.puntoYComa,
+            Variable.CuerpoFin
         ]
     },
     {
@@ -154,8 +154,8 @@ const table: Array<Cell> = [
         terminal: Terminal.read,
         elements: [
             Variable.Sentencia,
-            Variable.CuerpoFin,
-            Terminal.puntoYComa
+            Terminal.puntoYComa,
+            Variable.CuerpoFin
         ]
     },
     {
@@ -163,8 +163,8 @@ const table: Array<Cell> = [
         terminal: Terminal.write,
         elements: [
             Variable.Sentencia,
-            Variable.CuerpoFin,
-            Terminal.puntoYComa
+            Terminal.puntoYComa,
+            Variable.CuerpoFin
         ]
     },
     {
