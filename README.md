@@ -8,6 +8,7 @@
 ```bash
 cd tpi-sintaxis
 npm i 
+npm install -g typescript
 ```
 
 ## Ejecucion del proyecto
