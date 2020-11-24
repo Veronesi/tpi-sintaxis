@@ -8,7 +8,7 @@ import LexicalAnalizer from "./tools/LexicalAnalyzer"
 
 */
 
-let lexicalAnalizer = new LexicalAnalizer('vars hola hola = 4 + hola;')
+let lexicalAnalizer = new LexicalAnalizer('vars hola if(4>2){hola = 6;};')
 
 
 while (!lexicalAnalizer.inputString.overflow()) {
@@ -16,4 +16,8 @@ while (!lexicalAnalizer.inputString.overflow()) {
 }
 const syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalizer.lexicals);
 
+
+
+console.log(lexicalAnalizer.lexicals)
 syntacticAnalyzer.start()
+console.log(JSON.stringify(syntacticAnalyzer.derivationTree))

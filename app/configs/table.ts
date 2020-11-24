@@ -608,9 +608,18 @@ const table: Array<Cell> = [
     },
     {
         varaible: Variable.CierreExpresion,
-        terminal: Terminal.signo,
+        terminal: Terminal.mayor,
         elements: [
-            Terminal.signo,
+            Terminal.mayor,
+            Variable.SiguienteSR,
+            Variable.Operador1
+        ]
+    },
+    {
+        varaible: Variable.CierreExpresion,
+        terminal: Terminal.menor,
+        elements: [
+            Terminal.menor,
             Variable.SiguienteSR,
             Variable.Operador1
         ]

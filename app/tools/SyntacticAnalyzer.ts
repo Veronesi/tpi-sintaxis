@@ -54,12 +54,7 @@ class SyntacticAnalizer {
     }
 
     start() {
-        console.log(this.inputString)
-        console.log(this.pointer)
-        console.log(this.stack)
-        console.log(JSON.stringify(this.derivationTree))
         let top = { ...this.stack[this.stack.length - 1] }
-
 
         // Verificamos si ya terminamos de analizar
         if (this.pointer == this.inputString.length) {

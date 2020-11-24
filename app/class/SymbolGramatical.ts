@@ -78,6 +78,8 @@ String.prototype.toTerminal = function (): Terminal {
     case '$': return Terminal.peso;
     case '{': return Terminal.llaveOpen;
     case '}': return Terminal.llaveClose;
+    case '>': return Terminal.mayor;
+    case '<': return Terminal.menor;
     case 'numero': return Terminal.numero;
     case 'ε': return Terminal.epsilon;
     default: return Terminal.DEFAULT

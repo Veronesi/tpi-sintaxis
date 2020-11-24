@@ -30,6 +30,8 @@ enum Terminal {
     peso = '$',
     llaveOpen = '{',
     llaveClose = '}',
+    mayor = '>',
+    menor = '<',
     numero = 'numero',
     epsilon = 'ε',
     DEFAULT = 'DEFAULT'
