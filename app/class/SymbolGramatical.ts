@@ -81,6 +81,8 @@ String.prototype.toTerminal = function (): Terminal {
     case '>': return Terminal.mayor;
     case '<': return Terminal.menor;
     case 'numero': return Terminal.numero;
+    case 'comilla': return Terminal.comilla;
+    case 'cadena': return Terminal.cadena;
     case 'ε': return Terminal.epsilon;
     default: return Terminal.DEFAULT
   }

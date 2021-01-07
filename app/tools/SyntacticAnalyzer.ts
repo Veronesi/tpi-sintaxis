@@ -7,8 +7,8 @@ import LexicalItem from "../class/LexicalItem"
 import Terminal from "../class/Terminal"
 import SyntacticAnalizerDontEqualTerminalError from '../class/errors/SyntacticAnalizerDontEqualTerminalError'
 import SyntacticAnalizerUnexpectedTerminalError from "../class/errors/SyntacticAnalizerUnexpectedTerminalError"
+import Warn from './Warn'
 import { json } from "express"
-import Varaible from "../class/Variable"
 
 /**
  * @description Analizador Sintáctico Descendente Predictivo No Recursivo
@@ -25,11 +25,11 @@ class SyntacticAnalizer {
 
     constructor(inputString: Array<LexicalItem>) {
         this.inputString = inputString
-
         this.TAS = new TAS()
         this.TAS.load(table)
         this.stack = []
         this.pointer = 0
+
         // Cargamos el simbolo $
         this.stack.push({
             symbol: SymbolGramatical.peso,
@@ -37,7 +37,7 @@ class SyntacticAnalizer {
             lexema: '$'
         })
 
-        // Cargamos el simbolo inicial de la gramatica e inicializamos el Arbol
+        // cargamos la variable inicial (Programa)
         let newItemSack: Stack = {
             symbol: SymbolGramatical.Programa,
             pointer: Math.random(),
@@ -45,6 +45,7 @@ class SyntacticAnalizer {
         }
         this.stack.push(newItemSack)
 
+        // Inicializamos el arbol
         this.derivationTree = new Tree({
             symbolGramatical: SymbolGramatical.Programa,
             lexema: '',
@@ -53,44 +54,75 @@ class SyntacticAnalizer {
         })
     }
 
-    start() {
-        let top = { ...this.stack[this.stack.length - 1] }
+    async _analizer() {
+        let top = this.stack.pop()
+        let symbol = this.inputString[this.pointer];
 
-        // Verificamos si ya terminamos de analizar
-        if (this.pointer == this.inputString.length) {
-            if (top.symbol != SymbolGramatical.peso) {
-                try {
-                    // Terminamos de analizar la cadena de entrada, ahora tratamos de "vaciar" la pila
-                    if (this.stack[this.stack.length - 1].symbol.typeof() == 'terminal')
-                        throw new SyntacticAnalizerUnexpectedTerminalError(this.stack[this.stack.length - 1].symbol, this.inputString[this.pointer - 1].symbol)
-                    // this.stack[this.stack.length - 1].symbol == Varaible.CuerpoFin ? this.TAS.getElements(this.stack[this.stack.length - 1].symbol.toVariable(), Terminal.peso) :
-                    if (this.TAS.generatePeso(this.stack[this.stack.length - 1].symbol.toVariable())) {
-                        this.stack = this.stack.slice(0, -1)
-                        this.start()
-                    } else {
-                        let epsilonProduction: Array<SymbolGramatical> = this.TAS.getElements(this.stack[this.stack.length - 1].symbol.toVariable(), this.inputString[this.pointer - 1].symbol)
+        if (!top)
+            return true;
 
-                        this.derivationTree.setChilds(top.pointer, [new Tree({
-                            symbolGramatical: SymbolGramatical.epsilon,
-                            lexema: SymbolGramatical.epsilon,
-                            childs: [],
-                            pointer: Math.random()
-                        })])
+        if (!symbol) {
+            return this.completeTree()
+        }
 
-                        this.stack = this.stack.slice(0, -1)
-                        this.start()
-                    }
+        /*
+            Falta Exito y completar el arbol
+        */
 
-                } catch (err) {
-                    if (err instanceof SyntacticAnalizerUnexpectedTerminalError)
-                        console.log(err.showError())
-                    else
-                        console.log(err);
-
-                    process.exit()
+        // Verificamos si es un Terminal o Variable
+        if (top.symbol.typeof() == Terminal.toString()) {
+            if (top.symbol != Terminal.epsilon) {
+                if (top.symbol != symbol.symbol) {
+                    console.log('error')
+                    return false;
                 }
+                this.derivationTree.setTerminal({
+                    symbol: top.symbol,
+                    pointer: top.pointer,
+                    lexema: symbol.lexema
+                })
+                this.pointer++;
             }
         } else {
+
+            this.derivationTree.show()
+            // Obtenemos TAS[X, a]
+            let cell: SymbolGramatical[] = this.TAS.getElements(top.symbol.toVariable(), symbol.symbol.toTerminal())
+            const newItemsStack = cell.map((element, index) => {
+                return {
+                    symbol: element.toSymbolGramatical(),
+                    pointer: Math.random(),
+                    lexema: (index == 0 && element.typeof() == Terminal.toString()) ? (Terminal.epsilon == element ? Terminal.epsilon : symbol.lexema) : ''
+                }
+            }).reverse();
+
+            // Actualizamos la pila
+            this.stack = [...this.stack, ...newItemsStack]
+
+            // Agregamos los nuevos hijos al arbol
+            let _ = await newItemsStack.reverse().map(element => {
+                return new Tree({
+                    symbolGramatical: element.symbol,
+                    lexema: element.lexema,
+                    childs: [],
+                    pointer: element.pointer
+                })
+            })
+            this.derivationTree.setChilds(top.pointer, _)
+        }
+
+        this._analizer()
+    }
+
+    completeTree() {
+        console.log('completando arbol con e-producciones...')
+
+    }
+
+    /*
+
+
+    start() {
 
             top = top.symbol.typeof() == 'terminal' ? { ...top, lexema: this.inputString[this.pointer].lexema } : top
 
@@ -159,9 +191,7 @@ class SyntacticAnalizer {
                 console.log('listo!')
             }
 
-        }
-
-    }
+    */
 }
 
 export default SyntacticAnalizer

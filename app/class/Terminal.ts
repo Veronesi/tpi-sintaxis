@@ -34,7 +34,9 @@ enum Terminal {
     menor = '<',
     numero = 'numero',
     epsilon = 'ε',
-    DEFAULT = 'DEFAULT'
+    DEFAULT = 'DEFAULT',
+    comilla = '"',
+    cadena = 'cadena'
 }
 
 Terminal.toString = function(){
