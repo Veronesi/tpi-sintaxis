@@ -8,16 +8,13 @@ import LexicalAnalizer from "./tools/LexicalAnalyzer"
 
 */
 
-let lexicalAnalizer = new LexicalAnalizer('hola = 4; chau = 5;')
+let lexicalAnalizer = new LexicalAnalizer('vars hola, chau lee = 5; nee')
 
 
 while (!lexicalAnalizer.inputString.overflow()) {
   lexicalAnalizer.parser()
 }
 const syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalizer.lexicals);
-
-console.log('\n\n\n----\n\n\n')
-
-console.log(lexicalAnalizer.lexicals)
-syntacticAnalyzer._analizer()
-//console.log(JSON.stringify(syntacticAnalyzer.derivationTree))
+syntacticAnalyzer._analizer().then( tree => {
+  tree.show()
+})

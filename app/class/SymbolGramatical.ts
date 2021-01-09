@@ -37,7 +37,7 @@ String.prototype.toVariable = function (): Variable {
     case '<Operador3>': return Variable.Operador3;
     case '<SiguientePR>': return Variable.SiguientePR;
     case '<Condicional>': return Variable.Condicional;
-    case '<CierreCondicional>': return Variable.CierreCondicional;
+    case '<CierreCondicion>': return Variable.CierreCondicion;
     case '<Ciclo>': return Variable.Ciclo;
     case '<Condicion>': return Variable.Condicion;
     case '<OpAndOr>': return Variable.OpAndOr;
@@ -45,7 +45,11 @@ String.prototype.toVariable = function (): Variable {
     case '<CierreExpresion>': return Variable.CierreExpresion;
     case '<Lectura>': return Variable.Lectura;
     case '<Escritura>': return Variable.Escritura;
-    default: return Variable.DEFAULT
+    default:
+      console.log(this)
+      process.exit()
+      return Variable.DEFAULT 
+    break;
   }
 };
 

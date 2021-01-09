@@ -99,6 +99,13 @@ const table: Array<Cell> = [
             Terminal.epsilon,
         ]
     },
+    {
+        varaible: Variable.DeclaracionVariables,
+        terminal: Terminal.epsilon,
+        elements: [
+            Terminal.epsilon
+        ]
+    },
     /* ListaVariables */
     {
         varaible: Variable.ListaVariables,
@@ -116,6 +123,13 @@ const table: Array<Cell> = [
             Terminal.coma,
             Terminal.id,
             Variable.FinListaVariables
+        ]
+    },
+    {
+        varaible: Variable.FinListaVariables,
+        terminal: Terminal.epsilon,
+        elements: [
+            Terminal.epsilon
         ]
     },
     /* Cuerpo */
@@ -207,6 +221,13 @@ const table: Array<Cell> = [
         terminal: Terminal.peso,
         elements: [
             Terminal.peso
+        ]
+    },
+    {
+        varaible: Variable.CuerpoFin,
+        terminal: Terminal.epsilon,
+        elements: [
+            Terminal.epsilon
         ]
     },
     /* Sentencia */
@@ -326,6 +347,25 @@ const table: Array<Cell> = [
         elements: [
             Terminal.epsilon
         ]
+    },{
+        varaible: Variable.Operador1,
+        terminal: Terminal.mayor,
+        elements: [
+            Terminal.epsilon,
+        ]
+    }, {
+        varaible: Variable.Operador1,
+        terminal: Terminal.menor,
+        elements: [
+            Terminal.epsilon,
+        ]
+    },
+    {
+        varaible: Variable.Operador1,
+        terminal: Terminal.epsilon,
+        elements: [
+            Terminal.epsilon
+        ]
     },
     /* SiguienteSR */
     {
@@ -427,6 +467,13 @@ const table: Array<Cell> = [
         terminal: Terminal.menor,
         elements: [
             Terminal.epsilon,
+        ]
+    },
+    {
+        varaible: Variable.Operador2,
+        terminal: Terminal.epsilon,
+        elements: [
+            Terminal.epsilon
         ]
     },
     /* -- FALTAN MAYORIGUAL MENORIGUAL -- */
@@ -544,6 +591,13 @@ const table: Array<Cell> = [
             Terminal.epsilon
         ]
     },
+    {
+        varaible: Variable.Operador3,
+        terminal: Terminal.epsilon,
+        elements: [
+            Terminal.epsilon
+        ]
+    },
     /* -- FALTAN MAYORIGUAL MENORIGUAL -- */
     /* SiguientePR */
     {
@@ -584,22 +638,29 @@ const table: Array<Cell> = [
             Variable.Condicion,
             Terminal.parentesisClose,
             Variable.Bloque,
-            Variable.CierreCondicional
+            Variable.CierreCondicion
         ]
     },
-    /* CierreCondicional */
+    /* CierreCondicion */
     {
-        varaible: Variable.CierreCondicional,
+        varaible: Variable.CierreCondicion,
         terminal: Terminal.puntoYComa,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.CierreCondicional,
+        varaible: Variable.CierreCondicion,
         terminal: Terminal.else,
         elements: [
             Terminal.else,
             Variable.Bloque,
+        ]
+    },
+    {
+        varaible: Variable.CierreCondicion,
+        terminal: Terminal.epsilon,
+        elements: [
+            Terminal.epsilon
         ]
     },
     /* Ciclo */
@@ -684,6 +745,13 @@ const table: Array<Cell> = [
     }, {
         varaible: Variable.OpAndOr,
         terminal: Terminal.corcheteClose,
+        elements: [
+            Terminal.epsilon
+        ]
+    },
+    {
+        varaible: Variable.OpAndOr,
+        terminal: Terminal.epsilon,
         elements: [
             Terminal.epsilon
         ]

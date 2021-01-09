@@ -33,6 +33,10 @@ export default {
     nodesT(msg: string, title: string){
         if(configs.ENV_MODE)
         console.log(`${msg}\x1b[42m\x1b[30m${title}\x1b[0m`)
+    },
+
+    criticalError(msg: string){
+        console.log(`\x1b[31m${msg}\x1b[0m`)
     }
 }
 

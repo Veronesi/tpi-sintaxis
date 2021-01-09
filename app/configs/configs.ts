@@ -1,3 +1,3 @@
 export default {
-    ENV_MODE: true
+    ENV_MODE: false
 }

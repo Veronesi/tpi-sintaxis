@@ -9,6 +9,7 @@ import SyntacticAnalizerDontEqualTerminalError from '../class/errors/SyntacticAn
 import SyntacticAnalizerUnexpectedTerminalError from "../class/errors/SyntacticAnalizerUnexpectedTerminalError"
 import Warn from './Warn'
 import { json } from "express"
+import Varaible from "../class/Variable"
 
 /**
  * @description Analizador Sintáctico Descendente Predictivo No Recursivo
@@ -54,27 +55,28 @@ class SyntacticAnalizer {
         })
     }
 
-    async _analizer() {
+    async _analizer(): Promise<Tree> {
         let top = this.stack.pop()
         let symbol = this.inputString[this.pointer];
-
         if (!top)
-            return true;
+            return this.derivationTree;
 
         if (!symbol) {
             return this.completeTree()
         }
 
-        /*
-            Falta Exito y completar el arbol
-        */
-
         // Verificamos si es un Terminal o Variable
         if (top.symbol.typeof() == Terminal.toString()) {
             if (top.symbol != Terminal.epsilon) {
                 if (top.symbol != symbol.symbol) {
-                    console.log('error')
-                    return false;
+                    Warn.criticalError(`SyntaxError: Unexpected token '${symbol.lexema}' an '${top.symbol}' was expected in some line.`)
+                    return new Tree({
+                        symbolGramatical: Terminal.DEFAULT,
+                        lexema: '',
+                        childs: [],
+                        pointer: -1
+                    });
+                    
                 }
                 this.derivationTree.setTerminal({
                     symbol: top.symbol,
@@ -111,87 +113,35 @@ class SyntacticAnalizer {
             this.derivationTree.setChilds(top.pointer, _)
         }
 
-        this._analizer()
+        return this._analizer()
     }
 
-    completeTree() {
-        console.log('completando arbol con e-producciones...')
+    completeTree(): Tree {
+        let top = this.stack[this.stack.length - 1]
 
+        let isCompleted = this.derivationTree.isCompleted()
+        if(isCompleted)
+            return this.derivationTree;
+
+        if (top.symbol == Terminal.peso) {
+            let nextEmptyVariable = this.derivationTree.getNextEmptyVariable()
+            
+            let cell = this.TAS.getElements(nextEmptyVariable.symbol, Terminal.epsilon)
+
+            let _ = [new Tree({
+                symbolGramatical: Terminal.epsilon,
+                lexema: Terminal.epsilon,
+                childs: [],
+                pointer: Math.random()
+            })]
+            this.derivationTree.setChilds(nextEmptyVariable.pointer, _)
+        } else {
+            Warn.criticalError(`SyntaxError: '${top.symbol}' was expected after '${this.inputString[this.inputString.length-1].lexema}' in some line.`)
+            process.exit()
+        }
+
+        return this.completeTree()
     }
-
-    /*
-
-
-    start() {
-
-            top = top.symbol.typeof() == 'terminal' ? { ...top, lexema: this.inputString[this.pointer].lexema } : top
-
-            if (top.symbol !== SymbolGramatical.peso) {
-                let nextEmptyTerminal: EmptyTerminal = this.derivationTree.getNextEmptyTerminal()
-
-                // Verificamos si el proximo terminal a analizar ya esta en el arbol pero sin "vincular"
-                if (nextEmptyTerminal.pointer != -1 && top.symbol == nextEmptyTerminal.symbol) {
-                    this.derivationTree.setTerminal({
-                        symbol: nextEmptyTerminal.symbol,
-                        pointer: nextEmptyTerminal.pointer,
-                        lexema: top.lexema
-                    })
-                    this.stack = this.stack.slice(0, -1)
-                    this.pointer++
-                } else {
-                    if (top.symbol.typeof() == Terminal.toString()) {
-                        try {
-                            if (top.symbol == Terminal.epsilon) {
-                                this.stack = this.stack.slice(0, -1)
-                            } else {
-                                // El proximo elemento en la pila es un Terminal
-                                if (top.symbol != this.inputString[this.pointer].symbol) {
-
-                                    throw new SyntacticAnalizerDontEqualTerminalError(this.inputString[this.pointer].symbol, top.symbol)
-                                }
-                                this.stack = this.stack.slice(0, -1)
-                                this.pointer++
-                            }
-
-                        } catch (err) {
-                            console.log(err.showError())
-                            process.exit()
-                        }
-
-                    } else {
-                        // El proximo elemento en la pila es una Variable
-                        let elements: Array<SymbolGramatical> = this.TAS.getElements(top.symbol.toVariable(), this.inputString[this.pointer].symbol.toTerminal())
-                        let _lexema = (elements.length == 1 && elements[0] == Terminal.epsilon) ? Terminal.epsilon : ''
-                        let newTopStack = elements.reverse().map(stack => {
-                            return {
-                                symbol: stack.toSymbolGramatical(),
-                                pointer: Math.random(),
-                                lexema: _lexema
-                            }
-                        })
-                        this.stack = this.stack.slice(0, -1)
-                        this.stack = [...this.stack, ...newTopStack]
-
-                        if (newTopStack[newTopStack.length - 1].symbol != Terminal.epsilon && newTopStack[newTopStack.length - 1].symbol.typeof() == 'terminal') {
-                            newTopStack[newTopStack.length - 1].lexema = this.inputString[this.pointer].lexema
-                        }
-
-                        this.derivationTree.setChilds(top.pointer, newTopStack.reverse().map(stack => {
-                            return new Tree({
-                                symbolGramatical: stack.symbol,
-                                lexema: stack.lexema,
-                                childs: [],
-                                pointer: stack.pointer
-                            })
-                        }))
-                    }
-                }
-                this.start()
-            } else {
-                console.log('listo!')
-            }
-
-    */
 }
 
 export default SyntacticAnalizer

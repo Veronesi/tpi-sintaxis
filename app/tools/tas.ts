@@ -48,7 +48,10 @@ class TAS {
         try {
             elements = this.table[x][symbol]
             if (!elements)
+                elements = this.table[x][Terminal.epsilon]
+            if(!elements)
                 throw new TasEmptyCellError(x, symbol);
+            
             return elements;
         } catch (err) {
             if (err instanceof TasEmptyCellError)

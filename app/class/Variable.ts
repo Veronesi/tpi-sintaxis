@@ -19,7 +19,7 @@ enum Varaible {
     Operador3 = '<Operador3>',
     SiguientePR = '<SiguientePR>',
     Condicional = '<Condicional>',
-    CierreCondicional = '<CierreCondicion>',
+    CierreCondicion = '<CierreCondicion>',
     Ciclo = '<Ciclo>',
     Condicion = '<Condicion>',
     OpAndOr = '<OpAndOr>',
