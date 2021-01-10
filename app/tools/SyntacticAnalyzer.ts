@@ -8,7 +8,6 @@ import Terminal from "../class/Terminal"
 import SyntacticAnalizerDontEqualTerminalError from '../class/errors/SyntacticAnalizerDontEqualTerminalError'
 import SyntacticAnalizerUnexpectedTerminalError from "../class/errors/SyntacticAnalizerUnexpectedTerminalError"
 import Warn from './Warn'
-import { json } from "express"
 import Varaible from "../class/Variable"
 
 /**
@@ -16,6 +15,7 @@ import Varaible from "../class/Variable"
  * @property TAS: la tabla Variable/Terminal
  * @property stack: pila de elementos 
  * @property inputString: Cadena de entrada
+ * @returns Arbol de derivacion en forma de promesa
  */
 class SyntacticAnalizer {
     TAS: TAS
@@ -116,6 +116,9 @@ class SyntacticAnalizer {
         return this._analizer()
     }
 
+    /**
+     * @description Completa el arbol con e-produciones si es posible
+     */
     completeTree(): Tree {
         let top = this.stack[this.stack.length - 1]
 
@@ -126,7 +129,7 @@ class SyntacticAnalizer {
         if (top.symbol == Terminal.peso) {
             let nextEmptyVariable = this.derivationTree.getNextEmptyVariable()
             
-            let cell = this.TAS.getElements(nextEmptyVariable.symbol, Terminal.epsilon)
+            this.TAS.getElements(nextEmptyVariable.symbol, Terminal.epsilon)
 
             let _ = [new Tree({
                 symbolGramatical: Terminal.epsilon,

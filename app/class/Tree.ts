@@ -24,6 +24,12 @@ class Tree {
         this.childs = childs
         this.pointer = pointer
     }
+
+    /**
+     * @description agrega un array de hijos a un nodo en especifico
+     * @param pointer puntero del nodo
+     * @param childs hijos a insertar
+     */
     setChilds(pointer: number, childs: Array<Tree>): boolean {
         if (this.pointer == pointer) {
             this.childs = childs
@@ -38,6 +44,10 @@ class Tree {
         }
     }
 
+    /**
+     * @description obtiene el proximo terminal disponible
+     * @param strict true: lanzar un error al no encontrase
+     */
     getNextEmptyTerminal(strict = true): EmptyTerminal {
         if (this.symbol.typeof() == 'terminal' && this.lexema == '')
             return { symbol: this.symbol.toTerminal(), pointer: this.pointer }
@@ -53,6 +63,10 @@ class Tree {
         return { symbol: Terminal.DEFAULT, pointer: -1 }
     }
 
+    /**
+     * @description Obtiene la proxima variable disponible
+     * @param strict true: lanzar un error al no encontrase
+     */
     getNextEmptyVariable(strict = false): EmptyVariable {
         if (this.childs.length == 0 && this.symbol.typeof() == Variable.toString()) {
             return { pointer: this.pointer, symbol: this.symbol.toVariable() }
@@ -75,9 +89,18 @@ class Tree {
         return { pointer: -1, symbol: Variable.DEFAULT }
     }
 
+    /**
+     * @description Verifica si un nodo en especifico ya posee hijos
+     * @param pointer puntero del nodo
+     */
     hasChild(pointer: number): boolean {
         return this.pointer == pointer ? true : (this.childs.length ? Boolean(this.childs.find(child => child.hasChild(pointer))) : false)
     }
+
+    /**
+     * @description reemplaza un terminal no 'terminado' por su equivalente
+     * @param stack nuevo terminal
+     */
     setTerminal(stack: Stack): boolean {
         if (this.pointer == stack.pointer) {
             this.lexema = stack.lexema
@@ -92,6 +115,9 @@ class Tree {
         }
     }
 
+    /**
+     * @description verifica si el arbol ya se encuentra completo
+     */
     isCompleted(): boolean {
         if (this.childs.length == 0 && this.symbol.typeof() == Variable.toString()) {
             return false
@@ -107,6 +133,38 @@ class Tree {
         return true
     }
 
+    /**
+     * @description devuelve el primer Terminal/Variable que se encuentra en el arbol
+     * @param name nombre dle simbolo a buscar
+     */
+    getNodeByName(name: SymbolGramatical): Tree{
+        if (this.symbol == name) {
+            return this;
+        }
+
+        for (let child of this.childs) {
+
+            let _ = child.getNodeByName(name);
+            if (_.pointer > -1) {
+                return _;
+            }
+
+        }
+
+        return new Tree({
+            symbolGramatical: Variable.DEFAULT, 
+            lexema: Variable.DEFAULT, 
+            childs: [], 
+            pointer: -1
+        })
+    }
+
+    /**
+     * @description Grafica el arbol de forma simple
+     * @param e Espacio en blanco hacia la izquierda del texto
+     * @param last 
+     * @param symbol 
+     */
     show(e = 0, last = true, symbol = '') {
         if (this.symbol.typeof() == Terminal.toString())
             Warn.nodesT(`${"".padStart(e * 3, " ")}${last ? '└>' : '├>'}`, `${this.symbol} [${symbol}]`);
