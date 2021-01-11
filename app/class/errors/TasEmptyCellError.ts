@@ -13,7 +13,7 @@ class TasEmptyCellError extends Error {
     }
 
     showError() {
-        return `TasEmptyCellError: la variable ${this.variable} no genera al terminal "${this.symbol}"`;
+        return `\x1b[31mTasEmptyCellError: la variable ${this.variable} no genera al terminal "${this.symbol}"\x1b[0m`;
     }
 }
 

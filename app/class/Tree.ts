@@ -159,6 +159,11 @@ class Tree {
         })
     }
 
+    deleteChild(position:number = 0): Tree{
+        this.childs.splice(position,1)
+        return this
+    }
+
     /**
      * @description Grafica el arbol de forma simple
      * @param e Espacio en blanco hacia la izquierda del texto
@@ -172,6 +177,16 @@ class Tree {
             Warn.nodesV(`${"".padStart(e * 3, " ")}${last ? '└>' : '├>'}`, this.symbol);
         for (let [index, child] of this.childs.entries()) {
             child.show(e + 1, index == this.childs.length - 1, child.lexema)
+        }
+    }
+
+    fshow(e = 0, last = true, symbol = '') {
+        if (this.symbol.typeof() == Terminal.toString())
+            Warn.nodesT(`${"".padStart(e * 3, " ")}${last ? '└>' : '├>'}`, `${this.symbol} [${symbol}]`, true);
+        else
+            Warn.nodesV(`${"".padStart(e * 3, " ")}${last ? '└>' : '├>'}`, this.symbol, true);
+        for (let [index, child] of this.childs.entries()) {
+            child.fshow(e + 1, index == this.childs.length - 1, child.lexema)
         }
     }
 }

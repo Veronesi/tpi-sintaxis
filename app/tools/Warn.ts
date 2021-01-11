@@ -26,12 +26,12 @@ export default {
         if(configs.ENV_MODE)
         console.table(msg)
     },
-    nodesV(msg: string, title: string){
-        if(configs.ENV_MODE)
+    nodesV(msg: string, title: string, force:boolean = false){
+        if(configs.ENV_MODE || force)
         console.log(`${msg}\x1b[46m\x1b[30m${title}\x1b[0m`)
     },
-    nodesT(msg: string, title: string){
-        if(configs.ENV_MODE)
+    nodesT(msg: string, title: string, force:boolean = false){
+        if(configs.ENV_MODE || force)
         console.log(`${msg}\x1b[42m\x1b[30m${title}\x1b[0m`)
     },
 

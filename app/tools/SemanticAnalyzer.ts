@@ -13,6 +13,7 @@ enum DataType {
 interface Var {
     name: string
     type: DataType
+    value: number|string
 }
 
 /**
@@ -29,13 +30,13 @@ class SemanticAnalyzer {
     /**
      * @description ejecuta todas los analisis necesarios
      */
-    _analizer(){
+    _analizer(): Var[]{
         let treeVars = this.derivationTree.getNodeByName(Variable.ListaVariables);
         if(treeVars.pointer > -1)
             this.setVars(treeVars)
         
         this.checkVariablesIsDeclared()
-        return true
+        return this.vars
     }
 
     /**
@@ -51,7 +52,8 @@ class SemanticAnalyzer {
 
             this.vars.push({
                 name: tree.lexema,
-                type: DataType.Null
+                type: DataType.Null,
+                value: 0
             })
         }
 
