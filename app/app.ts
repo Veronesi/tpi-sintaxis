@@ -9,18 +9,22 @@ import Interpreter from './tools/Interpreter'
 
 */
 
-let lexicalAnalizer = new LexicalAnalizer('vars hola, chau hola = 1 + 2 * 3 ** (4 + 4);')
+let lexicalAnalizer = new LexicalAnalizer(
+  `vars hola, chau 
+  read("valor de hola: ", hola);
+  hola = hola + 1;
+  write("hola: ", hola);`)
 
 
 while (!lexicalAnalizer.inputString.overflow()) {
   lexicalAnalizer.parser()
 }
+
 const syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalizer.lexicals);
 syntacticAnalyzer._analizer().then( tree => {
-  tree.show()
+  //tree.fshow()
   const semanticAnalyzer = new SemanticAnalyzer(tree)
   const vars = semanticAnalyzer._analizer()
   const interpreter = new Interpreter(tree, vars) 
   interpreter._run()
-  console.log('listo')
 })

@@ -38,7 +38,7 @@ class LexicalAnalyzer {
         try {
           if (stackChar.length) {
             // Verificamos si es valido:
-            if (this.checkTypeValidate(stackChar[0], nextChar)) {
+            if (this.checkTypeValidate(stackChar[0], nextChar, stackChar[stackChar.length-1],stackChar.length)) {
               stackChar.push(nextChar)
             } else {
               complete = true
@@ -64,6 +64,7 @@ class LexicalAnalyzer {
 
   setLexical(stackChar: Array<StackChar>) {
     let terminal = stackChar.reduce((acc, x) => { return acc + x.lexema }, '')
+
     switch (stackChar[0].type) {
       case 'string':
 
@@ -86,6 +87,23 @@ class LexicalAnalyzer {
         })
         break;
       default:
+        if(/^".*"$/.test(terminal)){
+          this.lexicals.push({
+            symbol: Terminal.comilla,
+            lexema: Terminal.comilla
+          })
+
+          this.lexicals.push({
+            symbol: Terminal.cadena,
+            lexema: terminal.slice(1,-1)
+          })
+
+          this.lexicals.push({
+            symbol: Terminal.comilla,
+            lexema: Terminal.comilla
+          })
+          return
+        }
         if (terminal.toTerminal() == Terminal.DEFAULT) {
           throw new Error('LexicalError!')
         } else {
@@ -101,8 +119,8 @@ class LexicalAnalyzer {
   /**
    * @description verifica si el tipo del caracter proximo es valido para el primero
    */
-  checkTypeValidate(first: StackChar, last: StackChar) {
-    if (first.lexema == '"')
+  checkTypeValidate(first: StackChar, last: StackChar, lastest: StackChar,length: number = 1) {
+    if ((first.lexema == '"' && lastest.lexema != '"' && length > 1) || (first.lexema == '"' && length < 3))
       return true
     if (first.type == 'string' && (last.type == 'string' || last.type == 'number'))
       return true

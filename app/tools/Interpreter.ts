@@ -3,6 +3,13 @@ import Terminal from '../class/Terminal';
 import { Tree } from '../class/Tree'
 import Varaible from '../class/Variable';
 
+const readline = require('readline');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
 enum DataType {
     String = 0,
     Number = 1,
@@ -68,7 +75,40 @@ class Interpreter {
      * @description encargado de ejecutar Cuerpos
      * @param tree 
      */
-    _run(tree: Tree = this.derivationTree.childs[1]) {
+    _run(tree: Tree = this.derivationTree.childs[1], success: Function = () => { }) {
+        const child = tree.childs[0]
+        if (!child)
+            return
+
+        if (child.symbol.typeof() == Varaible.toString())
+            switch (child.symbol.toVariable()) {
+                case Varaible.Sentencia:
+                    this.switchSentencia(child, () => {
+                        this._run(tree.deleteChild())
+                    })
+                    break;
+                case Varaible.CuerpoFin:
+                    // Verificamos si es una e-producion    
+                    if (child.childs[0].symbol == Terminal.epsilon)
+                        return
+
+                    this.switchSentencia(child.childs[0], () => {
+                        this._run(child.childs[2], () => {
+                            this._run(tree.deleteChild())
+                        })
+                    })
+
+                    break;
+                default:
+                    console.log('error')
+                    break;
+            } else {
+            this._run(tree.deleteChild())
+        }
+
+        success()
+
+        /*
         for (const child of tree.childs) {
             if (child.symbol.typeof() == Varaible.toString())
                 switch (child.symbol.toVariable()) {
@@ -79,24 +119,39 @@ class Interpreter {
                         // Verificamos si es una e-producion    
                         if (child.childs[0].symbol == Terminal.epsilon)
                             return
-
-                        this.switchSentencia(child.childs[0])
-                        this._run(child.childs[2])
+                        
+                        this.switchSentencia(child.childs[0], () => {
+                             this._run(child.childs[2])
+                        })
+                        
                         break;
                     default:
                         console.log('error')
                         break;
                 }
         }
+        */
     }
 
-    switchSentencia(tree: Tree) {
+    excecuteSentence() {
+
+    }
+
+    switchSentencia(tree: Tree, success: Function = () => { }) {
         const sentencia = tree.childs[0];
         switch (sentencia.symbol.toVariable()) {
             case Varaible.Asignacion:
                 this.asignacion(sentencia)
                 break;
-
+            case Varaible.Condicional:
+                this.condicional(sentencia)
+                break;
+            case Varaible.Escritura:
+                this.escritura(sentencia, success);
+                break;
+            case Varaible.Lectura:
+                this.lectura(sentencia, success);
+                break;
             default:
                 console.log(tree)
                 process.exit()
@@ -106,11 +161,7 @@ class Interpreter {
 
     asignacion(tree: Tree) {
         const variable = this.nameToVariable(tree.childs[0].lexema);
-        console.log(tree.fshow())
-        let expresion = this.expresion(tree.childs[2])
-
-        console.log(expresion)
-
+        variable.value = this.expresion(tree.childs[2])
     }
 
     expresion(tree: Tree): number {
@@ -143,6 +194,95 @@ class Interpreter {
         }
 
         return 0
+    }
+
+    condicional(tree: Tree) {
+        //console.log(tree)
+        const condicion = this.condicion(tree.getChildByName(Varaible.Condicion))
+        const bloque = tree.getChildByName(Varaible.Bloque)
+        if (condicion) {
+            this._run(bloque.childs[1])
+        } else {
+            const cierreCondicion = tree.getChildByName(Varaible.CierreCondicion)
+            if (cierreCondicion.childs[0].symbol != Terminal.epsilon) {
+                this._run(cierreCondicion.getChildByName(Varaible.Bloque).childs[1])
+            }
+        }
+
+    }
+
+    condicion(tree: Tree): boolean {
+        let condicion = true;
+        const sigCondicion = tree.getChildByName(Varaible.SigCondicion)
+        switch (sigCondicion.childs[0].symbol) {
+            case Varaible.Expresion:
+                let expresion = this.expresion(sigCondicion.childs[0])
+                const signo = sigCondicion.childs[1].childs[0].symbol
+                let expresion2 = this.expresion(sigCondicion.childs[1].deleteChild())
+                switch (signo) {
+                    case Terminal.mayor:
+                        condicion = Number(expresion) > Number(expresion2)
+                        break;
+                    case Terminal.menor:
+                        condicion = Number(expresion) < Number(expresion2)
+                        break;
+                }
+                break;
+            case Terminal.not:
+                condicion = !this.condicion(this.sigCondicionToCondicion(sigCondicion.childs[1]))
+                break;
+            case Terminal.corcheteOpen:
+                condicion = this.condicion(sigCondicion.childs[1])
+                break;
+        }
+
+        const opAndOr = tree.getChildByName(Varaible.OpAndOr)
+
+        switch (opAndOr.childs[0].symbol) {
+            case Terminal.or:
+                return condicion || this.condicion(this.sigCondicionToCondicion(opAndOr.childs[1]))
+
+            case Terminal.and:
+                return condicion && this.condicion(this.sigCondicionToCondicion(opAndOr.childs[1]))
+
+            default:
+                return condicion
+        }
+
+    }
+
+    sigCondicionToCondicion(sigCondicion: Tree): Tree {
+        const opAndOr = new Tree({
+            symbolGramatical: Varaible.OpAndOr,
+            lexema: '',
+            childs: [new Tree({
+                symbolGramatical: Terminal.epsilon,
+                lexema: Terminal.epsilon,
+                childs: [],
+                pointer: Math.random()
+            })],
+            pointer: Math.random()
+        });
+
+        return new Tree({
+            symbolGramatical: Varaible.Condicion,
+            lexema: '',
+            childs: [sigCondicion, opAndOr],
+            pointer: Math.random()
+        })
+    }
+
+    escritura(tree: Tree, success: Function = () => { }) {
+        console.log(`${tree.getChildByName(Terminal.cadena).lexema}${this.expresion(tree.getChildByName(Varaible.Expresion))}`)
+        success()
+    }
+
+    lectura(tree: Tree, success: Function = () => { }) {
+        rl.question(tree.getChildByName(Terminal.cadena).lexema, (answer: string) => {
+            this.nameToVariable(tree.getChildByName(Terminal.id).lexema).value = Number(answer)
+            success()
+            //rl.close();
+        });
     }
 
     /**

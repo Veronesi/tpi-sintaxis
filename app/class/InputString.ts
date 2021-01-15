@@ -3,7 +3,7 @@ class InputString {
     pointer: number
     constructor(str: string) {
         // Transformamos en un array de caracteres para facilitar su manejo
-        this.input = str.split('')
+        this.input = str.replace(/\n/g, '').split('')
         this.pointer = 0
     }
     /**

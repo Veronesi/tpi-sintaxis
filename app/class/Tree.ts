@@ -133,11 +133,25 @@ class Tree {
         return true
     }
 
+    getChildByName(name: SymbolGramatical): Tree {
+        for (let child of this.childs) {
+            if (child.symbol == name)
+                return child
+        }
+
+        return new Tree({
+            symbolGramatical: Variable.DEFAULT,
+            lexema: Variable.DEFAULT,
+            childs: [],
+            pointer: -1
+        })
+    }
+
     /**
      * @description devuelve el primer Terminal/Variable que se encuentra en el arbol
      * @param name nombre dle simbolo a buscar
      */
-    getNodeByName(name: SymbolGramatical): Tree{
+    getNodeByName(name: SymbolGramatical): Tree {
         if (this.symbol == name) {
             return this;
         }
@@ -152,15 +166,15 @@ class Tree {
         }
 
         return new Tree({
-            symbolGramatical: Variable.DEFAULT, 
-            lexema: Variable.DEFAULT, 
-            childs: [], 
+            symbolGramatical: Variable.DEFAULT,
+            lexema: Variable.DEFAULT,
+            childs: [],
             pointer: -1
         })
     }
 
-    deleteChild(position:number = 0): Tree{
-        this.childs.splice(position,1)
+    deleteChild(position: number = 0): Tree {
+        this.childs.splice(position, 1)
         return this
     }
 
