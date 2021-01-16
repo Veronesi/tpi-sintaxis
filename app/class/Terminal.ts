@@ -39,7 +39,7 @@ enum Terminal {
     cadena = 'cadena'
 }
 
-Terminal.toString = function(){
+Terminal.toString = function () {
     return 'terminal'
 }
 

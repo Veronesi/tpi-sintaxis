@@ -26,7 +26,7 @@ class LexicalAnalyzer {
     this.inputString.clearSpace()
 
     while (!complete) {
-        char = this.inputString.next()
+      char = this.inputString.next()
 
       // Obtenemos el tipo del proximo caracter
       if (char) {
@@ -38,12 +38,12 @@ class LexicalAnalyzer {
         try {
           if (stackChar.length) {
             // Verificamos si es valido:
-            if (this.checkTypeValidate(stackChar[0], nextChar, stackChar[stackChar.length-1],stackChar.length)) {
+            if (this.checkTypeValidate(stackChar[0], nextChar, stackChar[stackChar.length - 1], stackChar.length)) {
               stackChar.push(nextChar)
             } else {
               complete = true
               // Creamos un nuevo lexema
-              
+
               this.inputString.back()
 
               this.setLexical(stackChar)
@@ -87,7 +87,7 @@ class LexicalAnalyzer {
         })
         break;
       default:
-        if(/^".*"$/.test(terminal)){
+        if (/^".*"$/.test(terminal)) {
           this.lexicals.push({
             symbol: Terminal.comilla,
             lexema: Terminal.comilla
@@ -95,7 +95,7 @@ class LexicalAnalyzer {
 
           this.lexicals.push({
             symbol: Terminal.cadena,
-            lexema: terminal.slice(1,-1)
+            lexema: terminal.slice(1, -1)
           })
 
           this.lexicals.push({
@@ -119,7 +119,7 @@ class LexicalAnalyzer {
   /**
    * @description verifica si el tipo del caracter proximo es valido para el primero
    */
-  checkTypeValidate(first: StackChar, last: StackChar, lastest: StackChar,length: number = 1) {
+  checkTypeValidate(first: StackChar, last: StackChar, lastest: StackChar, length: number = 1) {
     if ((first.lexema == '"' && lastest.lexema != '"' && length > 1) || (first.lexema == '"' && length < 3))
       return true
     if (first.type == 'string' && (last.type == 'string' || last.type == 'number'))

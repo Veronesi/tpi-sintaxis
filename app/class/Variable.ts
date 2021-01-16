@@ -30,7 +30,7 @@ enum Varaible {
     DEFAULT = '<DEFAULT>'
 }
 
-Varaible.toString = function(){
+Varaible.toString = function () {
     return 'variable'
 }
 

@@ -14,8 +14,8 @@ String.prototype.typeof = function () {
   return /^<\D+(?:\d+)?>$/.test(String(this)) ? 'variable' : 'terminal';
 };
 
-String.prototype.toSymbolGramatical = function(): SymbolGramatical {
-  return this.typeof() == 'variable' ? this.toVariable() : this.toTerminal() 
+String.prototype.toSymbolGramatical = function (): SymbolGramatical {
+  return this.typeof() == 'variable' ? this.toVariable() : this.toTerminal()
 }
 
 String.prototype.toVariable = function (): Variable {
@@ -48,8 +48,6 @@ String.prototype.toVariable = function (): Variable {
     default:
       console.log(this)
       process.exit()
-      return Variable.DEFAULT 
-    break;
   }
 };
 

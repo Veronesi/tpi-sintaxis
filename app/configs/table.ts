@@ -347,7 +347,7 @@ const table: Array<Cell> = [
         elements: [
             Terminal.epsilon
         ]
-    },{
+    }, {
         varaible: Variable.Operador1,
         terminal: Terminal.mayor,
         elements: [
@@ -764,34 +764,34 @@ const table: Array<Cell> = [
             Variable.Expresion,
             Variable.CierreExpresion
         ]
-    } ,{
+    }, {
         varaible: Variable.SigCondicion,
         terminal: Terminal.menos,
         elements: [
             Variable.Expresion,
             Variable.CierreExpresion
         ]
-    } ,{
+    }, {
         varaible: Variable.SigCondicion,
         terminal: Terminal.parentesisOpen,
         elements: [
             Variable.Expresion,
             Variable.CierreExpresion
         ]
-    } ,{
+    }, {
         varaible: Variable.SigCondicion,
         terminal: Terminal.numero,
         elements: [
             Variable.Expresion,
             Variable.CierreExpresion
         ]
-    } ,{
+    }, {
         varaible: Variable.SigCondicion,
         terminal: Terminal.not,
         elements: [
             Variable.SigCondicion,
         ]
-    } ,{
+    }, {
         varaible: Variable.SigCondicion,
         terminal: Terminal.corcheteOpen,
         elements: [
@@ -799,7 +799,7 @@ const table: Array<Cell> = [
             Variable.Condicion,
             Terminal.corcheteClose
         ]
-    } ,
+    },
     /* CierreExpresion */
     {
         varaible: Variable.CierreExpresion,
@@ -809,7 +809,7 @@ const table: Array<Cell> = [
             Variable.SiguienteSR,
             Variable.Operador1
         ]
-    } ,    {
+    }, {
         varaible: Variable.CierreExpresion,
         terminal: Terminal.menor,
         elements: [
@@ -817,7 +817,7 @@ const table: Array<Cell> = [
             Variable.SiguienteSR,
             Variable.Operador1
         ]
-    } ,
+    },
     /* -- FALTAN MAYORIGUAL MENORIGUAL -- */
     /* Lectura */
     {

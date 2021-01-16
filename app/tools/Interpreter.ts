@@ -1,4 +1,3 @@
-import { isThisTypeNode } from 'typescript';
 import Terminal from '../class/Terminal';
 import { Tree } from '../class/Tree'
 import Varaible from '../class/Variable';
@@ -11,13 +10,6 @@ enum DataType {
     Array = 2,
     Null = 3,
     Operator = 4
-}
-
-interface Temp {
-    hash: number,
-    operator: TypeOperator,
-    value: number,
-    future: number
 }
 
 enum TypeOperator {
@@ -35,22 +27,6 @@ interface Var {
 interface Expresion {
     value: number | boolean | string
     type: DataType
-}
-
-interface Number extends Expresion {
-    value: number
-}
-
-interface String extends Expresion {
-    value: string
-}
-
-interface Boolean extends Expresion {
-    value: number
-}
-
-interface Operator extends Expresion {
-    value: TypeOperator
 }
 
 class Interpreter {
@@ -72,10 +48,9 @@ class Interpreter {
      */
     _run(tree: Tree = this.derivationTree.childs[1], success: Function = () => { }) {
         const child = tree.childs[0]
-        if (!child){
+        if (!child) {
             return
         }
-            
 
         if (child.symbol.typeof() == Varaible.toString())
             switch (child.symbol.toVariable()) {
@@ -104,34 +79,6 @@ class Interpreter {
         }
 
         success()
-        
-        /*
-        for (const child of tree.childs) {
-            if (child.symbol.typeof() == Varaible.toString())
-                switch (child.symbol.toVariable()) {
-                    case Varaible.Sentencia:
-                        this.switchSentencia(child)
-                        break;
-                    case Varaible.CuerpoFin:
-                        // Verificamos si es una e-producion    
-                        if (child.childs[0].symbol == Terminal.epsilon)
-                            return
-                        
-                        this.switchSentencia(child.childs[0], () => {
-                             this._run(child.childs[2])
-                        })
-                        
-                        break;
-                    default:
-                        console.log('error')
-                        break;
-                }
-        }
-        */
-    }
-
-    excecuteSentence() {
-
     }
 
     switchSentencia(tree: Tree, success: Function = () => { }) {
@@ -156,7 +103,7 @@ class Interpreter {
         }
     }
 
-    asignacion(tree: Tree,success: Function = () => {}) {
+    asignacion(tree: Tree, success: Function = () => { }) {
         const variable = this.nameToVariable(tree.childs[0].lexema);
         variable.value = this.expresion(tree.childs[2])
         success()
@@ -194,7 +141,7 @@ class Interpreter {
         return 0
     }
 
-    condicional(tree: Tree,success: Function = () => {}) {
+    condicional(tree: Tree, success: Function = () => { }) {
         //console.log(tree)
         const condicion = this.condicion(tree.getChildByName(Varaible.Condicion))
         const bloque = tree.getChildByName(Varaible.Bloque)

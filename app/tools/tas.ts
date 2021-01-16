@@ -49,9 +49,9 @@ class TAS {
             elements = this.table[x][symbol]
             if (!elements)
                 elements = this.table[x][Terminal.epsilon]
-            if(!elements)
+            if (!elements)
                 throw new TasEmptyCellError(x, symbol);
-            
+
             return elements;
         } catch (err) {
             if (err instanceof TasEmptyCellError)
@@ -62,7 +62,7 @@ class TAS {
             process.exit()
         }
     }
-    generatePeso(x: Varaible){
+    generatePeso(x: Varaible) {
         return Object.keys(this.table[x]).includes(Terminal.peso)
     }
 }

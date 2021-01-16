@@ -13,7 +13,7 @@ enum DataType {
 interface Var {
     name: string
     type: DataType
-    value: number|string
+    value: number | string
 }
 
 /**
@@ -22,7 +22,7 @@ interface Var {
 class SemanticAnalyzer {
     derivationTree: Tree
     vars: Var[]
-    constructor(derivationTree: Tree){
+    constructor(derivationTree: Tree) {
         this.derivationTree = derivationTree;
         this.vars = []
     }
@@ -30,11 +30,11 @@ class SemanticAnalyzer {
     /**
      * @description ejecuta todas los analisis necesarios
      */
-    _analizer(): Var[]{
+    _analizer(): Var[] {
         let treeVars = this.derivationTree.getNodeByName(Variable.ListaVariables);
-        if(treeVars.pointer > -1)
+        if (treeVars.pointer > -1)
             this.setVars(treeVars)
-        
+
         this.checkVariablesIsDeclared()
         return this.vars
     }
@@ -43,9 +43,9 @@ class SemanticAnalyzer {
      * @description obtiene las variables declaradas del codigo
      * @param tree arbol a analizar
      */
-    setVars(tree: Tree){
-        if(tree.symbol.typeof() == Terminal.toString() && tree.symbol.toTerminal() == Terminal.id){
-            if(this.vars.find(e => e.name == tree.lexema)){
+    setVars(tree: Tree) {
+        if (tree.symbol.typeof() == Terminal.toString() && tree.symbol.toTerminal() == Terminal.id) {
+            if (this.vars.find(e => e.name == tree.lexema)) {
                 Warn.criticalError(`SyntaxError: Identifier '${tree.lexema}' has already been declared.`)
                 process.exit()
             }
@@ -57,7 +57,7 @@ class SemanticAnalyzer {
             })
         }
 
-        for(let child of tree.childs){
+        for (let child of tree.childs) {
             this.setVars(child)
         }
     }
@@ -66,15 +66,15 @@ class SemanticAnalyzer {
      * @description verifica que todas las variables utilizadas estes declaradas previamente
      * @param tree arbol a analizar
      */
-    checkVariablesIsDeclared(tree = this.derivationTree){
-        if(tree.symbol.typeof() == Terminal.toString() && tree.symbol.toTerminal() == Terminal.id){
-            if(!this.vars.find(e => e.name == tree.lexema)){
+    checkVariablesIsDeclared(tree = this.derivationTree) {
+        if (tree.symbol.typeof() == Terminal.toString() && tree.symbol.toTerminal() == Terminal.id) {
+            if (!this.vars.find(e => e.name == tree.lexema)) {
                 Warn.criticalError(`ReferenceError: '${tree.lexema}' is not defined.`)
                 process.exit()
             }
         }
 
-        for(let child of tree.childs){
+        for (let child of tree.childs) {
             this.checkVariablesIsDeclared(child)
         }
     }

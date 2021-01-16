@@ -1,13 +1,7 @@
-import SymbolGramatical from './class/SymbolGramatical';
-import TAS from './tools/tas'
-import table from './configs/table'
 import SyntacticAnalyzer from "./tools/SyntacticAnalyzer"
 import LexicalAnalizer from "./tools/LexicalAnalyzer"
 import SemanticAnalyzer from './tools/SemanticAnalyzer'
 import Interpreter from './tools/Interpreter'
-/*
-
-*/
 
 let lexicalAnalizer = new LexicalAnalizer(
   `vars edad, faltaEdad
@@ -27,10 +21,9 @@ while (!lexicalAnalizer.inputString.overflow()) {
 }
 
 const syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalizer.lexicals);
-syntacticAnalyzer._analizer().then( tree => {
-  //tree.fshow()
+syntacticAnalyzer._analizer().then(tree => {
   const semanticAnalyzer = new SemanticAnalyzer(tree)
   const vars = semanticAnalyzer._analizer()
-  const interpreter = new Interpreter(tree, vars) 
+  const interpreter = new Interpreter(tree, vars)
   interpreter._run()
 })

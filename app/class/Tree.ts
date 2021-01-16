@@ -80,12 +80,6 @@ class Tree {
             }
 
         }
-        /*
-        if (strict) {
-            console.log('error: getNextEmptyVariable')
-            process.exit()
-        }
-        */
         return { pointer: -1, symbol: Variable.DEFAULT }
     }
 
@@ -185,7 +179,7 @@ class Tree {
      * @param symbol 
      */
     show(e = 0, last = true, symbol = '') {
-        if(e == 0) 
+        if (e == 0)
             Warn.show('\n')
         if (this.symbol.typeof() == Terminal.toString())
             Warn.nodesT(`${"".padStart(e * 3, " ")}${last ? '└>' : '├>'}`, `${this.symbol} [${symbol}]`);

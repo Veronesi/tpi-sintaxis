@@ -83,7 +83,7 @@ class SyntacticAnalizer {
                         childs: [],
                         pointer: -1
                     });
-                    
+
                 }
                 this.derivationTree.setTerminal({
                     symbol: top.symbol,
@@ -132,12 +132,12 @@ class SyntacticAnalizer {
         let top = this.stack[this.stack.length - 1]
 
         let isCompleted = this.derivationTree.isCompleted()
-        if(isCompleted)
+        if (isCompleted)
             return this.derivationTree;
 
         if (top.symbol == Terminal.peso) {
             let nextEmptyVariable = this.derivationTree.getNextEmptyVariable()
-            
+
             this.TAS.getElements(nextEmptyVariable.symbol, Terminal.epsilon)
 
             let _ = [new Tree({
@@ -148,7 +148,7 @@ class SyntacticAnalizer {
             })]
             this.derivationTree.setChilds(nextEmptyVariable.pointer, _)
         } else {
-            Warn.criticalError(`SyntaxError: '${top.symbol}' was expected after '${this.inputString[this.inputString.length-1].lexema}' in some line.`)
+            Warn.criticalError(`SyntaxError: '${top.symbol}' was expected after '${this.inputString[this.inputString.length - 1].lexema}' in some line.`)
             process.exit()
         }
 

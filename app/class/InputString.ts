@@ -27,8 +27,8 @@ class InputString {
     overflow(): boolean {
         return this.pointer == this.input.length
     }
-    clearSpace(){
-        while(this.input[this.pointer] == " "){
+    clearSpace() {
+        while (this.input[this.pointer] == " ") {
             this.pointer++
         }
     }
