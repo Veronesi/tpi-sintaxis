@@ -185,6 +185,8 @@ class Tree {
      * @param symbol 
      */
     show(e = 0, last = true, symbol = '') {
+        if(e == 0) 
+            Warn.show('\n')
         if (this.symbol.typeof() == Terminal.toString())
             Warn.nodesT(`${"".padStart(e * 3, " ")}${last ? '└>' : '├>'}`, `${this.symbol} [${symbol}]`);
         else

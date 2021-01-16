@@ -200,7 +200,7 @@ const table: Array<Cell> = [
             Variable.CuerpoFin
         ]
     }, {
-        varaible: Variable.Cuerpo,
+        varaible: Variable.CuerpoFin,
         terminal: Terminal.read,
         elements: [
             Variable.Sentencia,

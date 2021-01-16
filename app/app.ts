@@ -10,10 +10,16 @@ import Interpreter from './tools/Interpreter'
 */
 
 let lexicalAnalizer = new LexicalAnalizer(
-  `vars hola, chau 
-  read("valor de hola: ", hola);
-  hola = hola + 1;
-  write("hola: ", hola);`)
+  `vars edad, faltaEdad
+  read("cual es tu edad: ", edad);
+  if(edad > 17){
+    write("eres mayor de edad ya que tienes ", edad);
+  }else{
+    write("eres menor de edad =D, tienes ", edad);
+    faltaEdad = 18 - edad;
+    write("solo te faltan ", faltaEdad);
+    read("acepto", edad);
+  };`)
 
 
 while (!lexicalAnalizer.inputString.overflow()) {

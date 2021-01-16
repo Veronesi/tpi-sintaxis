@@ -5,11 +5,6 @@ import Varaible from '../class/Variable';
 
 const readline = require('readline');
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
 enum DataType {
     String = 0,
     Number = 1,
@@ -77,8 +72,10 @@ class Interpreter {
      */
     _run(tree: Tree = this.derivationTree.childs[1], success: Function = () => { }) {
         const child = tree.childs[0]
-        if (!child)
+        if (!child){
             return
+        }
+            
 
         if (child.symbol.typeof() == Varaible.toString())
             switch (child.symbol.toVariable()) {
@@ -107,7 +104,7 @@ class Interpreter {
         }
 
         success()
-
+        
         /*
         for (const child of tree.childs) {
             if (child.symbol.typeof() == Varaible.toString())
@@ -141,10 +138,10 @@ class Interpreter {
         const sentencia = tree.childs[0];
         switch (sentencia.symbol.toVariable()) {
             case Varaible.Asignacion:
-                this.asignacion(sentencia)
+                this.asignacion(sentencia, success)
                 break;
             case Varaible.Condicional:
-                this.condicional(sentencia)
+                this.condicional(sentencia, success)
                 break;
             case Varaible.Escritura:
                 this.escritura(sentencia, success);
@@ -159,9 +156,10 @@ class Interpreter {
         }
     }
 
-    asignacion(tree: Tree) {
+    asignacion(tree: Tree,success: Function = () => {}) {
         const variable = this.nameToVariable(tree.childs[0].lexema);
         variable.value = this.expresion(tree.childs[2])
+        success()
     }
 
     expresion(tree: Tree): number {
@@ -196,7 +194,7 @@ class Interpreter {
         return 0
     }
 
-    condicional(tree: Tree) {
+    condicional(tree: Tree,success: Function = () => {}) {
         //console.log(tree)
         const condicion = this.condicion(tree.getChildByName(Varaible.Condicion))
         const bloque = tree.getChildByName(Varaible.Bloque)
@@ -208,7 +206,7 @@ class Interpreter {
                 this._run(cierreCondicion.getChildByName(Varaible.Bloque).childs[1])
             }
         }
-
+        success()
     }
 
     condicion(tree: Tree): boolean {
@@ -278,10 +276,15 @@ class Interpreter {
     }
 
     lectura(tree: Tree, success: Function = () => { }) {
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+
         rl.question(tree.getChildByName(Terminal.cadena).lexema, (answer: string) => {
             this.nameToVariable(tree.getChildByName(Terminal.id).lexema).value = Number(answer)
+            rl.close();
             success()
-            //rl.close();
         });
     }
 

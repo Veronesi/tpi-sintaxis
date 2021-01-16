@@ -5,10 +5,7 @@ import Stack from "../class/Stack"
 import { Tree, EmptyTerminal } from "../class/Tree"
 import LexicalItem from "../class/LexicalItem"
 import Terminal from "../class/Terminal"
-import SyntacticAnalizerDontEqualTerminalError from '../class/errors/SyntacticAnalizerDontEqualTerminalError'
-import SyntacticAnalizerUnexpectedTerminalError from "../class/errors/SyntacticAnalizerUnexpectedTerminalError"
 import Warn from './Warn'
-import Varaible from "../class/Variable"
 
 /**
  * @description Analizador Sintáctico Descendente Predictivo No Recursivo
@@ -53,23 +50,33 @@ class SyntacticAnalizer {
             childs: [],
             pointer: newItemSack.pointer
         })
+
+        Warn.table(this.inputString)
     }
 
     async _analizer(): Promise<Tree> {
+        Warn.info(`SyntacicAnalizer:_analizer()`)
         let top = this.stack.pop()
         let symbol = this.inputString[this.pointer];
+
         if (!top)
             return this.derivationTree;
 
         if (!symbol) {
+            Warn.info(`SyntacicAnalizer:completeTree()`)
             return this.completeTree()
         }
 
+        Warn.title(`top: ${top.lexema} (${top.symbol})`)
+        Warn.title(`symbol: ${symbol.lexema} (${symbol.symbol}), pointer: ${this.pointer}`)
+
         // Verificamos si es un Terminal o Variable
         if (top.symbol.typeof() == Terminal.toString()) {
+            Warn.title('is a Terminal')
             if (top.symbol != Terminal.epsilon) {
                 if (top.symbol != symbol.symbol) {
                     Warn.criticalError(`SyntaxError: Unexpected token '${symbol.lexema}' an '${top.symbol}' was expected in some line.`)
+                    process.exit()
                     return new Tree({
                         symbolGramatical: Terminal.DEFAULT,
                         lexema: '',
@@ -86,10 +93,12 @@ class SyntacticAnalizer {
                 this.pointer++;
             }
         } else {
-
+            Warn.title('is a Variable')
             this.derivationTree.show()
             // Obtenemos TAS[X, a]
             let cell: SymbolGramatical[] = this.TAS.getElements(top.symbol.toVariable(), symbol.symbol.toTerminal())
+            Warn.title(`TAS[${top.symbol.toVariable()}, ${symbol.symbol.toTerminal()}]`)
+            Warn.table(cell)
             const newItemsStack = cell.map((element, index) => {
                 return {
                     symbol: element.toSymbolGramatical(),
