@@ -9,9 +9,10 @@
 cd tpi-sintaxis
 npm i 
 npm install -g typescript
+npm run tsc
 ```
 
 ## Ejecucion del proyecto
 ```bash
-npm run prod
+npm run interpeter <filename>
 ```
