@@ -353,6 +353,12 @@ const table: Array<Cell> = [
         elements: [
             Terminal.epsilon,
         ]
+    },{
+        varaible: Variable.Operador1,
+        terminal: Terminal.igual,
+        elements: [
+            Terminal.epsilon,
+        ]
     }, {
         varaible: Variable.Operador1,
         terminal: Terminal.menor,
@@ -459,6 +465,12 @@ const table: Array<Cell> = [
     }, {
         varaible: Variable.Operador2,
         terminal: Terminal.mayor,
+        elements: [
+            Terminal.epsilon,
+        ]
+    }, {
+        varaible: Variable.Operador2,
+        terminal: Terminal.igual,
         elements: [
             Terminal.epsilon,
         ]
@@ -581,6 +593,12 @@ const table: Array<Cell> = [
     }, {
         varaible: Variable.Operador3,
         terminal: Terminal.mayor,
+        elements: [
+            Terminal.epsilon
+        ]
+    }, {
+        varaible: Variable.Operador3,
+        terminal: Terminal.igual,
         elements: [
             Terminal.epsilon
         ]
@@ -814,6 +832,14 @@ const table: Array<Cell> = [
         terminal: Terminal.menor,
         elements: [
             Terminal.menor,
+            Variable.SiguienteSR,
+            Variable.Operador1
+        ]
+    },{
+        varaible: Variable.CierreExpresion,
+        terminal: Terminal.igual,
+        elements: [
+            Terminal.igual,
             Variable.SiguienteSR,
             Variable.Operador1
         ]

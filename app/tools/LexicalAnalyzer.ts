@@ -52,7 +52,7 @@ class LexicalAnalyzer {
             stackChar.push(nextChar)
           }
         } catch (error) {
-          console.log(error)
+          console.log("LexicalAnalyzer_ERROR: ", error)
         }
       }
       if (this.inputString.overflow()) {
@@ -105,7 +105,7 @@ class LexicalAnalyzer {
           return
         }
         if (terminal.toTerminal() == Terminal.DEFAULT) {
-          throw new Error('LexicalError!')
+          throw new Error(`LexicalError! "${JSON.stringify(stackChar)}"`)
         } else {
           this.lexicals.push({
             symbol: terminal.toTerminal(),

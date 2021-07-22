@@ -55,9 +55,9 @@ class TAS {
             return elements;
         } catch (err) {
             if (err instanceof TasEmptyCellError)
-                console.log(err.showError())
+                console.log("ERROR_TAS: ", err.showError())
             else
-                console.log(err);
+                console.log("ERROR_TAS: ", err);
 
             process.exit()
         }

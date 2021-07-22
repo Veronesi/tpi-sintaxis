@@ -13,7 +13,8 @@
   "devDependencies": {},
   "scripts": {
     "tsc": "tsc",
-    "prod": "npm run tsc && node ./build/app.js"
+    "prod": "npm run tsc && node ./build/app.js",
+    "interpeter": "node ./build/app.js"
   },
   "keywords": [],
   "author": "",

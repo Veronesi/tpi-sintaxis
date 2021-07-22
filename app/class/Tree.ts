@@ -190,9 +190,18 @@ class Tree {
         }
     }
 
+    public static deepCopy(tree : Tree): Tree {
+        let newChilds : Array<Tree> = [];
+        for(const child of tree.childs){
+            newChilds.push(Tree.deepCopy(child));
+        }
+
+        return new Tree({symbolGramatical: tree.symbol, lexema: tree.lexema, childs: newChilds, pointer: tree.pointer});
+      }
+
     fshow(e = 0, last = true, symbol = '') {
         if (this.symbol.typeof() == Terminal.toString())
-            Warn.nodesT(`${"".padStart(e * 3, " ")}${last ? '└>' : '├>'}`, `${this.symbol} [${symbol}]`, true);
+            Warn.nodesT(`${"".padStart(e * 3, " ")}${last ? '└>' : '├>'}`, ` ${this.symbol} ${this.symbol != symbol ? "["+symbol+"]" : ""} `, true);
         else
             Warn.nodesV(`${"".padStart(e * 3, " ")}${last ? '└>' : '├>'}`, this.symbol, true);
         for (let [index, child] of this.childs.entries()) {

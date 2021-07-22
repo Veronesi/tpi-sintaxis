@@ -29,133 +29,151 @@ interface Expresion {
     type: DataType
 }
 
+const emptyTree: Tree = new Tree({ symbolGramatical: Varaible.Cuerpo, lexema: "<Cuerpo>", childs: [], pointer: 0 })
+const emptyPromise: Promise<Tree> = new Promise((resolve, reject) => resolve(emptyTree))
 class Interpreter {
     derivationTree: Tree
     vars: Var[]
-    stackExpresion: Expresion[]
-    temp: number
 
     constructor(derivationTree: Tree, vars: Var[] = []) {
         this.derivationTree = derivationTree;
         this.vars = vars
-        this.stackExpresion = []
-        this.temp = 0
     }
 
-    /**
-     * @description encargado de ejecutar Cuerpos
-     * @param tree 
-     */
-    _run(tree: Tree = this.derivationTree.childs[1], success: Function = () => { }) {
-        const child = tree.childs[0]
-        if (!child) {
-            return
-        }
+    start(tree: Tree = this.derivationTree.childs[1]): Promise<Tree> {
+        const firstChild = tree.childs[0];
+        // Verificamos si esta vacio
+        if (!firstChild)
+            return emptyPromise;
 
-        if (child.symbol.typeof() == Varaible.toString())
-            switch (child.symbol.toVariable()) {
+        const promise: Promise<Tree> = new Promise((resolve, reject) => {
+
+            // Verificamos que sea una terminal
+            if (firstChild.symbol.typeof() != Varaible.toString())
+                return resolve(tree.deleteChild());
+
+            switch (firstChild.symbol.toVariable()) {
                 case Varaible.Sentencia:
-                    this.switchSentencia(child, () => {
-                        this._run(tree.deleteChild())
-                    })
+                    // Se trata de una sentencia
+                    this.handleSentencia(firstChild)
+                        .then(() => resolve(tree.deleteChild()))
+                        .catch(err => console.log("error1", err))
                     break;
                 case Varaible.CuerpoFin:
-                    // Verificamos si es una e-producion    
-                    if (child.childs[0].symbol == Terminal.epsilon)
-                        return
+                    // Verificamos si es una e-produccion;
+                    if (firstChild.childs[0].symbol == Terminal.epsilon)
+                        return reject();
 
-                    this.switchSentencia(child.childs[0], () => {
-                        this._run(child.childs[2], () => {
-                            this._run(tree.deleteChild())
-                        })
-                    })
-
+                    this.handleSentencia(firstChild.childs[0]).then(() => {
+                        this.start(firstChild.childs[2]).then(() => {
+                            resolve(tree.deleteChild())
+                        }).catch(err => console.log("error2", err))
+                    }).catch(() => emptyTree);
                     break;
                 default:
-                    console.log('error')
+                    console.log("ups:", firstChild.symbol.toVariable())
                     break;
-            } else {
-            this._run(tree.deleteChild())
-        }
-
-        success()
-    }
-
-    switchSentencia(tree: Tree, success: Function = () => { }) {
-        const sentencia = tree.childs[0];
-        switch (sentencia.symbol.toVariable()) {
-            case Varaible.Asignacion:
-                this.asignacion(sentencia, success)
-                break;
-            case Varaible.Condicional:
-                this.condicional(sentencia, success)
-                break;
-            case Varaible.Escritura:
-                this.escritura(sentencia, success);
-                break;
-            case Varaible.Lectura:
-                this.lectura(sentencia, success);
-                break;
-            case Varaible.Ciclo:
-                this.ciclo(sentencia, success);
-                break;
-            default:
-                console.log(tree)
-                process.exit()
-                break;
-        }
-    }
-
-    asignacion(tree: Tree, success: Function = () => { }) {
-        const variable = this.nameToVariable(tree.childs[0].lexema);
-        variable.value = this.expresion(tree.childs[2])
-        success()
-    }
-
-    expresion(tree: Tree): number {
-        if (tree.childs[0].symbol.typeof() == Terminal.toString()) {
-            // caso especial de <SiguientePR>
-            switch (tree.childs[0].symbol.toTerminal()) {
-                case Terminal.parentesisOpen:
-                    return this.expresion(tree.childs[1])
-
-                case Terminal.id:
-                    return Number(this.nameToVariable(tree.childs[0].lexema).value)
-
-                case Terminal.numero:
-                    return Number(tree.childs[0].lexema)
             }
-            return 0;
-        }
-        
-        if (tree.childs[1].childs[0].symbol.toTerminal() == Terminal.epsilon)
-            return this.expresion(tree.childs[0])
+        })
 
-        // si operador no es una e-producion
-        switch (tree.childs[1].childs[0].symbol.toTerminal()) {
-            case Terminal.mas: return this.expresion(tree.childs[0]) + this.expresion(tree.childs[1].deleteChild())
-            case Terminal.menos: return this.expresion(tree.childs[0]) - this.expresion(tree.childs[1].deleteChild())
-            case Terminal.por: return this.expresion(tree.childs[0]) * this.expresion(tree.childs[1].deleteChild())
-            case Terminal.dividido: return this.expresion(tree.childs[0]) / this.expresion(tree.childs[1].deleteChild())
-            case Terminal.potencia: return Math.pow(this.expresion(tree.childs[0]), this.expresion(tree.childs[1].deleteChild()))
-            case Terminal.raiz: return Math.pow(this.expresion(tree.childs[0]), 1 / this.expresion(tree.childs[1].deleteChild()))
-        }
-
-        return 0
+        return promise
+            .then((newTree: Tree = emptyTree) => this.start(newTree))
+            .catch(() => emptyTree);
     }
 
-    condicional(tree: Tree, success: Function = () => { }) {
+    // Verifica que tipo de sentencia se trata
+    handleSentencia(tree: Tree): Promise<Tree> {
+        const sentencia = tree.childs[0];
+        const promise: Promise<Tree> = new Promise((resolve, reject) => {
+            // Verificamos de que tipo de sentencia se trata
+            switch (sentencia.symbol.toVariable()) {
+                case Varaible.Asignacion:
+                    this.handleAsignacion(sentencia)
+                    resolve(emptyTree);
+                    break;
+                case Varaible.Lectura:
+                    this.handleLectura(sentencia).then(() => resolve(emptyTree));
+                    break;
+                case Varaible.Escritura:
+                    this.handleEscritura(sentencia);
+                    resolve(emptyTree);
+                    break;
+                case Varaible.Condicional:
+                    this.handleCondicional(sentencia).then(() => resolve(emptyTree)).catch(() => resolve(emptyTree));
+                    break;
+                case Varaible.Ciclo:
+                    this.handleCiclo(sentencia).then(() => resolve(emptyTree)).catch(() => resolve(emptyTree));
+                    break;
+                default:
+                    console.log("Error capo ", sentencia.symbol.toVariable())
+                    reject(tree)
+                    process.exit()
+            }
+        })
+
+        return promise;
+    }
+
+    handleAsignacion(tree: Tree): Tree {
+        const variable = this.nameToVariable(tree.childs[0].lexema);
+        variable.value = this.expresion(tree.childs[2]);
+        return emptyTree;
+    }
+
+    handleLectura(tree: Tree): Promise<Tree> {
+
+        const promise: Promise<Tree> = new Promise((resolve, reject) => {
+            const rl = readline.createInterface({
+                input: process.stdin,
+                output: process.stdout
+            });
+
+            rl.question(tree.getChildByName(Terminal.cadena).lexema, (answer: string) => {
+                this.nameToVariable(tree.getChildByName(Terminal.id).lexema).value = Number(answer)
+                rl.close()
+                resolve(emptyTree)
+            })
+        })
+
+        return promise;
+    }
+
+    handleEscritura(tree: Tree): Promise<Tree> {
+        console.log(`${tree.getChildByName(Terminal.cadena).lexema}${this.expresion(tree.getChildByName(Varaible.Expresion))}`);
+        return emptyPromise;
+    }
+
+    handleCiclo(tree: Tree): Promise<Tree> {
+        const condicion = this.condicion(tree.getChildByName(Varaible.Condicion));
+        const bloque = tree.getChildByName(Varaible.Bloque);
+
+        if (!condicion) return emptyPromise;
+
+        const promise: Promise<Tree> = new Promise((resolve, reject) => {
+
+            // Creamos una copia del bloque
+            const copyBloque: Tree = Tree.deepCopy(bloque.childs[1]);
+            this.start(copyBloque).then(() => {
+                this.handleCiclo(tree).then(() => {
+                    resolve(emptyTree)
+                })
+            }).catch(() => { console.log("ERR_HANDLE_CICLE"); resolve(emptyTree) })
+        });
+
+        return promise;
+    }
+
+    handleCondicional(tree: Tree): Promise<Tree> {
         const condicion = this.condicion(tree.getChildByName(Varaible.Condicion))
         const bloque = tree.getChildByName(Varaible.Bloque)
-        if (condicion) {
-            this._run(bloque.childs[1])
-        } else {
-            const cierreCondicion = tree.getChildByName(Varaible.CierreCondicion)
-            if (cierreCondicion.childs[0].symbol != Terminal.epsilon) {
-                this._run(cierreCondicion.getChildByName(Varaible.Bloque).childs[1])
-            }
-        }
-        success()
+
+        if (condicion)
+            return this.start(bloque.childs[1]);
+
+        const cierreCondicion = tree.getChildByName(Varaible.CierreCondicion)
+        if (cierreCondicion.childs[0].symbol == Terminal.epsilon) return emptyPromise;
+
+        return this.start(cierreCondicion.getChildByName(Varaible.Bloque).childs[1])
     }
 
     condicion(tree: Tree): boolean {
@@ -165,7 +183,7 @@ class Interpreter {
             case Varaible.Expresion:
                 let expresion = this.expresion(sigCondicion.childs[0])
                 const signo = sigCondicion.childs[1].childs[0].symbol
-                
+
                 const TreeExpresion2 = new Tree({
                     symbolGramatical: sigCondicion.childs[1].symbol,
                     pointer: Math.random(),
@@ -180,6 +198,9 @@ class Interpreter {
                         break;
                     case Terminal.menor:
                         condicion = Number(expresion) < Number(expresion2)
+                        break;
+                    case Terminal.igual:
+                        condicion = Number(expresion) == Number(expresion2)
                         break;
                 }
                 break;
@@ -203,7 +224,38 @@ class Interpreter {
             default:
                 return condicion
         }
+    }
 
+    expresion(tree: Tree): number {
+        if (tree.childs[0].symbol.typeof() == Terminal.toString()) {
+            // caso especial de <SiguientePR>
+            switch (tree.childs[0].symbol.toTerminal()) {
+                case Terminal.parentesisOpen:
+                    return this.expresion(tree.childs[1])
+
+                case Terminal.id:
+                    return Number(this.nameToVariable(tree.childs[0].lexema).value)
+
+                case Terminal.numero:
+                    return Number(tree.childs[0].lexema)
+            }
+            return 0;
+        }
+
+        if (tree.childs[1].childs[0].symbol.toTerminal() == Terminal.epsilon)
+            return this.expresion(tree.childs[0])
+
+        // si operador no es una e-producion
+        switch (tree.childs[1].childs[0].symbol.toTerminal()) {
+            case Terminal.mas: return this.expresion(tree.childs[0]) + this.expresion(tree.childs[1].deleteChild())
+            case Terminal.menos: return this.expresion(tree.childs[0]) - this.expresion(tree.childs[1].deleteChild())
+            case Terminal.por: return this.expresion(tree.childs[0]) * this.expresion(tree.childs[1].deleteChild())
+            case Terminal.dividido: return this.expresion(tree.childs[0]) / this.expresion(tree.childs[1].deleteChild())
+            case Terminal.potencia: return Math.pow(this.expresion(tree.childs[0]), this.expresion(tree.childs[1].deleteChild()))
+            case Terminal.raiz: return Math.pow(this.expresion(tree.childs[0]), 1 / this.expresion(tree.childs[1].deleteChild()))
+        }
+
+        return 0
     }
 
     sigCondicionToCondicion(sigCondicion: Tree): Tree {
@@ -225,35 +277,6 @@ class Interpreter {
             childs: [sigCondicion, opAndOr],
             pointer: Math.random()
         })
-    }
-
-    escritura(tree: Tree, success: Function = () => { }) {
-        console.log(`${tree.getChildByName(Terminal.cadena).lexema}${this.expresion(tree.getChildByName(Varaible.Expresion))}`)
-        success()
-    }
-
-    lectura(tree: Tree, success: Function = () => { }) {
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-
-        rl.question(tree.getChildByName(Terminal.cadena).lexema, (answer: string) => {
-            this.nameToVariable(tree.getChildByName(Terminal.id).lexema).value = Number(answer)
-            rl.close();
-            success()
-        });
-    }
-
-    ciclo(tree: Tree, success: Function = ()=>{}){
-        let condicion = this.condicion(tree.getChildByName(Varaible.Condicion))
-        const bloque = tree.getChildByName(Varaible.Bloque)
-        while(condicion){
-            this._run(bloque.childs[1])
-            condicion = this.condicion(tree.getChildByName(Varaible.Condicion))
-        }
-        
-        success()
     }
 
     /**

@@ -46,7 +46,7 @@ String.prototype.toVariable = function (): Variable {
     case '<Lectura>': return Variable.Lectura;
     case '<Escritura>': return Variable.Escritura;
     default:
-      console.log(this)
+      console.log("SYMBOL_GRAMATICAL_TOVARIABLE_ERROR", this)
       process.exit()
   }
 };
