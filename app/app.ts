@@ -48,7 +48,7 @@ syntacticAnalyzer._analizer().then(tree => {
   const vars = semanticAnalyzer._analizer()
 
   const interpreter = new Interpreter(tree, vars)
-  //interpreter._run()
+
   interpreter.start().then(() => {
     if (process.argv[3] == "vars")
       console.table(interpreter.vars)

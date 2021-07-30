@@ -3,6 +3,7 @@ import SymbolGramatical from './SymbolGramatical'
 import Terminal from './Terminal'
 import Variable from './Variable'
 import Warn from '../tools/Warn'
+
 interface EmptyTerminal {
     symbol: Terminal,
     pointer: number

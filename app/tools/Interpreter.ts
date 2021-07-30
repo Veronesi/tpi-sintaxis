@@ -185,13 +185,14 @@ class Interpreter {
                 const signo = sigCondicion.childs[1].childs[0].symbol
 
                 const TreeExpresion2 = new Tree({
-                    symbolGramatical: sigCondicion.childs[1].symbol,
+                    symbolGramatical: Varaible.Expresion,
                     pointer: Math.random(),
                     lexema: '',
                     childs: [sigCondicion.childs[1].childs[1], sigCondicion.childs[1].childs[2]]
                 })
 
                 let expresion2 = this.expresion(TreeExpresion2)
+
                 switch (signo) {
                     case Terminal.mayor:
                         condicion = Number(expresion) > Number(expresion2)
@@ -199,6 +200,12 @@ class Interpreter {
                     case Terminal.menor:
                         condicion = Number(expresion) < Number(expresion2)
                         break;
+                        case Terminal.mayorIgual:
+                            condicion = Number(expresion) >= Number(expresion2)
+                            break;
+                        case Terminal.menorIgual:
+                            condicion = Number(expresion) <= Number(expresion2)
+                            break;
                     case Terminal.igual:
                         condicion = Number(expresion) == Number(expresion2)
                         break;
@@ -247,12 +254,13 @@ class Interpreter {
 
         // si operador no es una e-producion
         switch (tree.childs[1].childs[0].symbol.toTerminal()) {
-            case Terminal.mas: return this.expresion(tree.childs[0]) + this.expresion(tree.childs[1].deleteChild())
-            case Terminal.menos: return this.expresion(tree.childs[0]) - this.expresion(tree.childs[1].deleteChild())
-            case Terminal.por: return this.expresion(tree.childs[0]) * this.expresion(tree.childs[1].deleteChild())
-            case Terminal.dividido: return this.expresion(tree.childs[0]) / this.expresion(tree.childs[1].deleteChild())
-            case Terminal.potencia: return Math.pow(this.expresion(tree.childs[0]), this.expresion(tree.childs[1].deleteChild()))
-            case Terminal.raiz: return Math.pow(this.expresion(tree.childs[0]), 1 / this.expresion(tree.childs[1].deleteChild()))
+            case Terminal.mas: return this.expresion(tree.childs[0]) + this.expresion(Tree.deepCopy(tree.childs[1]).deleteChild())
+            case Terminal.menos: return this.expresion(tree.childs[0]) - this.expresion(Tree.deepCopy(tree.childs[1]).deleteChild())
+            case Terminal.por: return this.expresion(tree.childs[0]) * this.expresion(Tree.deepCopy(tree.childs[1]).deleteChild())
+            case Terminal.dividido: return this.expresion(tree.childs[0]) / this.expresion(Tree.deepCopy(tree.childs[1]).deleteChild())
+            case Terminal.potencia: return Math.pow(this.expresion(tree.childs[0]), this.expresion(Tree.deepCopy(tree.childs[1]).deleteChild()))
+            case Terminal.raiz: return Math.pow(this.expresion(tree.childs[0]), 1 / this.expresion(Tree.deepCopy(tree.childs[1]).deleteChild()))
+            case Terminal.resto: return this.expresion(tree.childs[0]) % this.expresion(Tree.deepCopy(tree.childs[1]).deleteChild())
         }
 
         return 0

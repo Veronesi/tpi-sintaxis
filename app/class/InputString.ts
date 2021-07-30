@@ -1,6 +1,15 @@
 class InputString {
+    /**
+     * @property [input] 
+     * @property [pointer] posicion del puntero para el codigo fuente de entrada
+     */
     input: Array<string>
     pointer: number
+
+    /**
+     * @description
+     * @param str codigo fuente del programa
+     */
     constructor(str: string) {
         // Transformamos en un array de caracteres para facilitar su manejo
         this.input = str.replace(/\n/g, '').split('')
@@ -21,13 +30,25 @@ class InputString {
             : null;
         return charset;
     }
-    back() {
+
+    /**
+     * @description vuelve el puntero a una posicion anterior
+     */
+    back(): void {
         this.pointer--
     }
+
+    /** 
+     * @description verifica si ya se recorrieron todos los elementos
+     */
     overflow(): boolean {
-        return this.pointer == this.input.length
+        return this.pointer >= this.input.length
     }
-    clearSpace() {
+
+    /**
+     * @description elimina todos los espacios en blanco proximos
+     */
+    clearSpace(): void {
         while (this.input[this.pointer] == " ") {
             this.pointer++
         }

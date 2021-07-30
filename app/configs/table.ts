@@ -353,6 +353,18 @@ const table: Array<Cell> = [
         elements: [
             Terminal.epsilon,
         ]
+    }, {
+        varaible: Variable.Operador1,
+        terminal: Terminal.mayorIgual,
+        elements: [
+            Terminal.epsilon,
+        ]
+    }, {
+        varaible: Variable.Operador1,
+        terminal: Terminal.menorIgual,
+        elements: [
+            Terminal.epsilon,
+        ]
     },{
         varaible: Variable.Operador1,
         terminal: Terminal.igual,
@@ -440,6 +452,14 @@ const table: Array<Cell> = [
         ]
     }, {
         varaible: Variable.Operador2,
+        terminal: Terminal.resto,
+        elements: [
+            Terminal.resto,
+            Variable.SiguienteMD,
+            Variable.Operador2
+        ]
+    }, {
+        varaible: Variable.Operador2,
         terminal: Terminal.parentesisClose,
         elements: [
             Terminal.epsilon,
@@ -468,6 +488,18 @@ const table: Array<Cell> = [
         elements: [
             Terminal.epsilon,
         ]
+    },{
+        varaible: Variable.Operador2,
+        terminal: Terminal.mayorIgual,
+        elements: [
+            Terminal.epsilon,
+        ]
+    },{
+        varaible: Variable.Operador2,
+        terminal: Terminal.menorIgual,
+        elements: [
+            Terminal.epsilon,
+        ]
     }, {
         varaible: Variable.Operador2,
         terminal: Terminal.igual,
@@ -488,7 +520,6 @@ const table: Array<Cell> = [
             Terminal.epsilon
         ]
     },
-    /* -- FALTAN MAYORIGUAL MENORIGUAL -- */
     /* SiguienteMD */
     {
         varaible: Variable.SiguienteMD,
@@ -552,6 +583,12 @@ const table: Array<Cell> = [
         ]
     }, {
         varaible: Variable.Operador3,
+        terminal: Terminal.resto,
+        elements: [
+            Terminal.epsilon
+        ]
+    }, {
+        varaible: Variable.Operador3,
         terminal: Terminal.potencia,
         elements: [
             Terminal.potencia,
@@ -596,6 +633,18 @@ const table: Array<Cell> = [
         elements: [
             Terminal.epsilon
         ]
+    },{
+        varaible: Variable.Operador3,
+        terminal: Terminal.mayorIgual,
+        elements: [
+            Terminal.epsilon
+        ]
+    },{
+        varaible: Variable.Operador3,
+        terminal: Terminal.menorIgual,
+        elements: [
+            Terminal.epsilon
+        ]
     }, {
         varaible: Variable.Operador3,
         terminal: Terminal.igual,
@@ -616,7 +665,6 @@ const table: Array<Cell> = [
             Terminal.epsilon
         ]
     },
-    /* -- FALTAN MAYORIGUAL MENORIGUAL -- */
     /* SiguientePR */
     {
         varaible: Variable.SiguientePR,
@@ -807,6 +855,7 @@ const table: Array<Cell> = [
         varaible: Variable.SigCondicion,
         terminal: Terminal.not,
         elements: [
+            Terminal.not,
             Variable.SigCondicion,
         ]
     }, {
@@ -827,6 +876,22 @@ const table: Array<Cell> = [
             Variable.SiguienteSR,
             Variable.Operador1
         ]
+    },{
+        varaible: Variable.CierreExpresion,
+        terminal: Terminal.mayorIgual,
+        elements: [
+            Terminal.mayorIgual,
+            Variable.SiguienteSR,
+            Variable.Operador1
+        ]
+    },{
+        varaible: Variable.CierreExpresion,
+        terminal: Terminal.menorIgual,
+        elements: [
+            Terminal.menorIgual,
+            Variable.SiguienteSR,
+            Variable.Operador1
+        ]
     }, {
         varaible: Variable.CierreExpresion,
         terminal: Terminal.menor,
@@ -844,7 +909,6 @@ const table: Array<Cell> = [
             Variable.Operador1
         ]
     },
-    /* -- FALTAN MAYORIGUAL MENORIGUAL -- */
     /* Lectura */
     {
         varaible: Variable.Lectura,

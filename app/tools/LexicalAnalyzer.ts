@@ -2,6 +2,7 @@ import InputString from "../class/InputString"
 import "../class/SymbolGramatical"
 import LexicalItem from "../class/LexicalItem"
 import Terminal from "../class/Terminal"
+import Warn from './Warn'
 
 interface StackChar {
   type: string,
@@ -24,18 +25,18 @@ class LexicalAnalyzer {
 
     // Borramos los espacios en blancos al inicio del terminal
     this.inputString.clearSpace()
+    try {
+      while (!complete) {
+        char = this.inputString.next()
 
-    while (!complete) {
-      char = this.inputString.next()
+        // Obtenemos el tipo del proximo caracter
+        if (char) {
+          let groups = char.match(/^(?<string>[A-z])|(?<number>\d)|(?<symbol>\D)/)?.groups
+          let nextChar = { type: 'NaT', lexema: 'NaL' }
+          for (let typeChar in groups) {
+            nextChar = groups[typeChar] ? { type: typeChar, lexema: groups[typeChar] } : nextChar;
+          }
 
-      // Obtenemos el tipo del proximo caracter
-      if (char) {
-        let groups = char.match(/^(?<string>[A-z])|(?<number>\d)|(?<symbol>\D)/)?.groups
-        let nextChar = { type: 'NaT', lexema: 'NaL' }
-        for (let typeChar in groups) {
-          nextChar = groups[typeChar] ? { type: typeChar, lexema: groups[typeChar] } : nextChar;
-        }
-        try {
           if (stackChar.length) {
             // Verificamos si es valido:
             if (this.checkTypeValidate(stackChar[0], nextChar, stackChar[stackChar.length - 1], stackChar.length)) {
@@ -51,14 +52,15 @@ class LexicalAnalyzer {
           } else {
             stackChar.push(nextChar)
           }
-        } catch (error) {
-          console.log("LexicalAnalyzer_ERROR: ", error)
+        }
+        if (this.inputString.overflow()) {
+          complete = true
+          this.setLexical(stackChar)
         }
       }
-      if (this.inputString.overflow()) {
-        complete = true
-        this.setLexical(stackChar)
-      }
+    } catch (error) {
+      console.log("LexicalAnalyzer_ERROR: ", error);
+      process.exit();
     }
   }
 
@@ -104,13 +106,18 @@ class LexicalAnalyzer {
           })
           return
         }
-        if (terminal.toTerminal() == Terminal.DEFAULT) {
-          throw new Error(`LexicalError! "${JSON.stringify(stackChar)}"`)
-        } else {
-          this.lexicals.push({
-            symbol: terminal.toTerminal(),
-            lexema: terminal
-          })
+        try{
+          if (terminal.toTerminal() == Terminal.DEFAULT) {
+            throw new Error(terminal)
+          } else {
+            this.lexicals.push({
+              symbol: terminal.toTerminal(),
+              lexema: terminal
+            })
+          }
+        }catch(err){
+          Warn.criticalError(`LexicalError: '${err.message}' is not defined.`)
+          process.exit();
         }
         break;
     }
@@ -128,6 +135,9 @@ class LexicalAnalyzer {
       return true
 
     if (last.lexema == '*' && ['*', '/'].includes(first.lexema))
+      return true
+
+    if (last.lexema == '=' && ['>', '<'].includes(first.lexema))
       return true
 
     return last.lexema == "=" && first.lexema == "="

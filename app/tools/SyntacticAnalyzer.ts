@@ -75,15 +75,9 @@ class SyntacticAnalizer {
             Warn.title('is a Terminal')
             if (top.symbol != Terminal.epsilon) {
                 if (top.symbol != symbol.symbol) {
-                    Warn.criticalError(`SyntaxError: Unexpected token '${symbol.lexema}' an '${top.symbol}' was expected in some line.`)
+                    Warn.criticalError(`SyntaxError: Unexpected token '${symbol.lexema}' an '${top.symbol}' was expected in some line.`);
+                    this.derivationTree.fshow();
                     process.exit()
-                    return new Tree({
-                        symbolGramatical: Terminal.DEFAULT,
-                        lexema: '',
-                        childs: [],
-                        pointer: -1
-                    });
-
                 }
                 this.derivationTree.setTerminal({
                     symbol: top.symbol,

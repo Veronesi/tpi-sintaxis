@@ -1,6 +1,9 @@
 import Terminal from './Terminal'
 import Variable from './Variable'
 
+/**
+ * @description agrega propiedades al tipo String
+ */
 declare global {
   interface String {
     typeof(): string;
@@ -10,14 +13,25 @@ declare global {
   }
 }
 
+/**
+ * @description verifia si es un terminal o una variable
+ */
 String.prototype.typeof = function () {
   return /^<\D+(?:\d+)?>$/.test(String(this)) ? 'variable' : 'terminal';
 };
 
+/**
+ * @description convierte un string en un SymbolGramatical
+ * @returns devuelve un Terinal o una Variable
+ */
 String.prototype.toSymbolGramatical = function (): SymbolGramatical {
   return this.typeof() == 'variable' ? this.toVariable() : this.toTerminal()
 }
 
+/**
+ * @description convierte un string en una Variable
+ * @returns Variable correspondiente
+ */
 String.prototype.toVariable = function (): Variable {
   switch (this) {
     case '<Programa>': return Variable.Programa;
@@ -51,6 +65,10 @@ String.prototype.toVariable = function (): Variable {
   }
 };
 
+/**
+ * @description convierte un string en un Terminal
+ * @returns Terminal correspondiente
+ */
 String.prototype.toTerminal = function (): Terminal {
   switch (this) {
     case 'vars': return Terminal.vars;
@@ -64,6 +82,7 @@ String.prototype.toTerminal = function (): Terminal {
     case '/': return Terminal.dividido;
     case '**': return Terminal.potencia;
     case '/*': return Terminal.raiz;
+    case '%': return Terminal.resto;
     case '(': return Terminal.parentesisOpen;
     case ')': return Terminal.parentesisClose;
     case 'if': return Terminal.if;
@@ -80,6 +99,8 @@ String.prototype.toTerminal = function (): Terminal {
     case '$': return Terminal.peso;
     case '{': return Terminal.llaveOpen;
     case '}': return Terminal.llaveClose;
+    case '>=': return Terminal.mayorIgual;
+    case '<=': return Terminal.menorIgual;
     case '>': return Terminal.mayor;
     case '<': return Terminal.menor;
     case 'numero': return Terminal.numero;
@@ -90,7 +111,6 @@ String.prototype.toTerminal = function (): Terminal {
     default: return Terminal.DEFAULT
   }
 };
-
 
 const SymbolGramatical = {
   ...Terminal,
