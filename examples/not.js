@@ -1,3 +1,7 @@
-if(not [ 1 > 2 ]){
-    write("1 = 1", 0);
-};
+vars hola1, hola2
+
+hola1 = hola2 * 3;
+
+if(hola > 3){
+    hola2 = 3;
+}

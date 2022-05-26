@@ -38,6 +38,10 @@ while (!lexicalAnalizer.inputString.overflow()) {
   lexicalAnalizer.parser()
 }
 
+if (process.argv[3] == "lexicals")
+  console.table(lexicalAnalizer.lexicals);
+
+
 const syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalizer.lexicals);
 syntacticAnalyzer._analizer().then(tree => {
   if (process.argv[3] == "tree")
