@@ -8,11 +8,11 @@
 - [Analizador lexico](#analisis-lexico)
 - [Analizador sintactico](#analisis-sintactico)
 - [Evaluador](#evaluador)
-- [Caracteres](https://github.com/Veronesi/NodeCompiler/blob/master/src/config/caracteres.js)
-- [Palabras reservadas](https://github.com/Veronesi/NodeCompiler/blob/master/src/config/palabrasReservadas.js)
-- [Producciones](https://github.com/Veronesi/NodeCompiler/blob/master/src/config/producciones.js)
-- [Manejo de errores](https://github.com/Veronesi/NodeCompiler/wiki/Manejo-de-errores)
-- [Ejemplo de compilacion](https://github.com/Veronesi/NodeCompiler/wiki/ejemplo-compilaci%C3%B3n)
+- [Terminales](https://github.com/Veronesi/tpi-sintaxis/blob/master/app/class/Terminal.ts)
+- [Variables](https://github.com/Veronesi/tpi-sintaxis/blob/master/app/class/Variable.ts)
+- [TAS](https://github.com/Veronesi/tpi-sintaxis/blob/master/app/configs/table.ts)
+- [Manejo de errores](#manejo-de-errores)
+- [Ejemplo de compilacion](#ejemplo-de-compilacion)
 
 ## Instalacion
 
@@ -178,6 +178,55 @@ Serie Fibonacci, valor de n: 7
          └><CuerpoFin
 ```
 
+## Manejo de errores
+
+### erores de TAS
+```diff
+- 1 = 2;                    ERROR_TAS:  TasEmptyCellError: la variable <Programa> no genera al terminal "numero"
+```
+
+### errores de semantica
+```diff
+  vars var1
+- va1 = var2;               ReferenceError: 'va1' is not defined.
+```
+
+### errores lexicos
+```diff
+  vars var1
+- var1:= 4;                  LexicalError: ':' is not defined.
+```
+
+### errores sintacticos
+```diff
+-  vars var1, var2, var1     SyntaxError: Identifier 'var1' has already been declared.
+   var1 = var2 * 3;
+```
+
+
+
+
+```diff
+  vars hola1, hola2
+
+  hola1 = hola2 * 3;
+
+  if(hola > 3){
+-   hola2 = 3                 SyntaxError: Unexpected token '}' an ';' was expected in some line.
+  };
+```
+
+
+
+```diff
+  vars hola1, hola2
+
+  hola1 = hola2 * 3;
+
+  if(hola > 3){
+    hola2 = 3;
+- }                           SyntaxError: ';' was expected after '}' in some line.
+```
 
 ## Ejemplo de compilacion
 
