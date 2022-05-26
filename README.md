@@ -1,8 +1,22 @@
 # tpi-sintaxis
 
+## Tabla de contenido
+
+- [Instalacion](#instalacion)
+- [guia de uso](#guia-de-uso)
+- [Lista de comandos](#lista-de-comandos)
+- [Analizador lexico](#analisis-lexico)
+- [Analizador sintactico](#analisis-sintactico)
+- [Evaluador](#evaluador)
+- [Caracteres](https://github.com/Veronesi/NodeCompiler/blob/master/src/config/caracteres.js)
+- [Palabras reservadas](https://github.com/Veronesi/NodeCompiler/blob/master/src/config/palabrasReservadas.js)
+- [Producciones](https://github.com/Veronesi/NodeCompiler/blob/master/src/config/producciones.js)
+- [Manejo de errores](https://github.com/Veronesi/NodeCompiler/wiki/Manejo-de-errores)
+- [Ejemplo de compilacion](https://github.com/Veronesi/NodeCompiler/wiki/ejemplo-compilaci%C3%B3n)
+
 ## Instalacion
 
-1. Descargar e instalar node https://nodejs.org/es/
+1. Instalar [Node.js](https://nodejs.org/es/)
 2. Clonar el repo `git clone https://github.com/Veronesi/tpi-sintaxis.git`
 3. Descargar dependencias 
 ```bash
@@ -12,7 +26,175 @@ npm install -g typescript
 npm run tsc
 ```
 
-## Ejecucion del proyecto
+## Guia de uso
+Los programas a ejecutar se encuentran en la carpeta /examples/\[filename].js
 ```bash
 npm run interpeter <filename>
+```
+### Sintaxis del lenguaje:
+asignacion y declaracion de varialbes:
+```js
+vars x, y
+x = 4;
+y = x+1;
+```
+
+ciclo: `while(<condicion>){<cuerpo>};`
+```js
+vars i
+i = 0;
+while(i < 10){
+  i = i+1;
+};
+```
+
+condicional: `if(<condicion>){<cuerpo>};` o `if(<condicion>){<cuerpo1>}else{<cuerpo2>};`
+```js
+vars variable1
+variable1 = 3;
+if(variable1 > 4){
+  vaiable1 = 5;
+}else{
+vaiable1 = 8;
+};
+```
+
+lectura: `read("<cadena de texto>", x);`
+```js
+vars rd
+read("inserte un numero", rd);
+```
+
+escritura: `write("<cadena de texto>", x);`
+```js
+var wr
+wr = 65;
+write("la variable wr vale: ", wr);
+```
+```
+output: la variable wr vale 65
+```
+## lista de comandos
+```
+    tree ................................ Muestra el arbol sintactico
+    lexicals ............................ Muestra la tabla de componentes lexicos
+    vars ................................ Muestra el valor final de las variables
+
+    help ................................ Muestra informacion sobre los comandos
+    
+    characters .......................... Lista los caracteres
+    reserved-words ...................... Lista las palabras reservadas
+    productions ......................... Lista las producciones
+```
+
+`npm run interpeter fibonacci lexicals`
+```
+┌─────────┬──────────┬─────────────────────────────────┐
+│ (index) │  symbol  │             lexema              │
+├─────────┼──────────┼─────────────────────────────────┤
+│    0    │  'vars'  │             'vars'              │
+│    1    │   'id'   │               'n'               │
+│    2    │   ','    │               ','               │
+│    3    │   'id'   │              'n1'               │
+│    4    │   ','    │               ','               │
+│    5    │   'id'   │              'n2'               │
+│    6    │   ','    │               ','               │
+│ ....... │ ........ │ ............................... │
+│   66    │   '='    │               '='               │
+│   67    │   'id'   │           'nextTerm'            │
+│   68    │   ';'    │               ';'               │
+│   69    │   'id'   │               'i'               │
+│   70    │   '='    │               '='               │
+│   71    │   'id'   │               'i'               │
+│   72    │   '+'    │               '+'               │
+│   73    │ 'numero' │               '1'               │
+│   74    │   ';'    │               ';'               │
+│   75    │   '}'    │               '}'               │
+│   76    │   ';'    │               ';'               │
+└─────────┴──────────┴─────────────────────────────────┘
+```
+
+`npm run interpeter fibonacci vars`
+```
+Serie Fibonacci, valor de n: 7
+┌─────────┬────────────┬──────┬───────┐
+│ (index) │    name    │ type │ value │
+├─────────┼────────────┼──────┼───────┤
+│    0    │    'n'     │  3   │   7   │
+│    1    │    'n1'    │  3   │  13   │
+│    2    │    'n2'    │  3   │  21   │
+│    3    │ 'nextTerm' │  3   │  21   │
+│    4    │    'i'     │  3   │   9   │
+└─────────┴────────────┴──────┴───────┘
+```
+
+`npm run interpeter edad tree`
+```
+└><Programa>
+   ├><DeclaracionVariables>
+      ├> vars  
+      └><ListaVariables>
+         ├> id [edad] 
+         └><FinListaVariables>
+            └> ε  
+   └><Cuerpo>
+      ├><Sentencia>
+         └><Lectura>
+            ├> read  
+            ├> (  
+            ├> "  
+            ├> cadena [cual es tu edad?: ] 
+            ├> "  
+            ├> ,  
+            ├> id [edad] 
+            └> )  
+      ├> ;  
+      └><CuerpoFin>
+         ├><Sentencia>
+
+    ........................................
+
+                              ├> "  
+                              ├> cadena [usted es menor de edad, ya que tiene ] 
+                              ├> "  
+                              ├> ,  
+                              ├><Expresion>
+                                 ├><SiguienteSR>
+                                    ├><SiguienteMD>
+                                       ├><SiguientePR>
+                                          └> id [edad] 
+                                       └><Operador3>
+                                          └> ε  
+                                    └><Operador2>
+                                       └> ε  
+                                 └><Operador1>
+                                    └> ε  
+                              └> )  
+                        ├> ;  
+                        └><CuerpoFin>
+                           └> ε  
+                     └> }  
+         ├> ;  
+         └><CuerpoFin
+```
+
+
+## Ejemplo de compilacion
+
+### fibonacci
+calcula el n-ésimo número de la sucesión de Fibonacci.
+```bash
+npm run interpeter fibonacci
+```
+
+### mcm
+calcula el mínimo común múltiplo entre dos números ingresados por pantalla.
+```bash
+npm run interpeter mcm
+```
+
+### example
+busqueda del tesoro, se debe ingresar un numero del 1 al 9 y encontrar la casilla donde se encuentra el premio.
+```bash
+npm run interpeter example
 ```
