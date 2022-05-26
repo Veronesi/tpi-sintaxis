@@ -76,7 +76,7 @@ class SyntacticAnalizer {
             if (top.symbol != Terminal.epsilon) {
                 if (top.symbol != symbol.symbol) {
                     Warn.criticalError(`SyntaxError: Unexpected token '${symbol.lexema}' an '${top.symbol}' was expected in some line.`);
-                    this.derivationTree.fshow();
+                    //this.derivationTree.fshow();
                     process.exit()
                 }
                 this.derivationTree.setTerminal({

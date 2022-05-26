@@ -51,6 +51,6 @@ syntacticAnalyzer._analizer().then(tree => {
 
   interpreter.start().then(() => {
     if (process.argv[3] == "vars")
-      console.table(interpreter.vars)
+       console.table(interpreter.vars)
   })
 })
