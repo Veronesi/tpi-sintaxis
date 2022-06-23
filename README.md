@@ -194,7 +194,7 @@ Serie Fibonacci, valor de n: 7
 ### errores lexicos
 ```diff
   vars var1
-- var1 = 4;                  LexicalError: ':' is not defined.
+- var1:= 4;                  LexicalError: ':' is not defined.
 ```
 
 ### errores sintacticos
