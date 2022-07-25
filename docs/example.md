@@ -15,7 +15,7 @@ this.inputString = new InputString(inputString)
 ```
 ```js
 InputString {
-  input: ['v', 'a', 'r', 's', ' ','h', 'o', 'l', 'a', ' ','h', 'o', 'l', 'a', ' ','=', ' ', '1', ';'],
+  input: ['v', 'a', 'r', 's', ' ','t', 'e', 's', 't', ' ','t', 'e', 's', 't', ' ','=', ' ', '1', ';'],
   pointer: 0
 }
 ```
@@ -49,10 +49,12 @@ LexicalAnalyzer.checkTypeValidate({ type: 'string', lexema: 'v' } { type: 'strin
 ```js
 lexicalAnalizer.lexicals = [
   { symbol: 'vars', lexema: 'vars' },
-  { symbol: 'id', lexema: 'hola' },
-  { symbol: 'id', lexema: 'hola' },
+  { symbol: 'id', lexema: 'test' },
+  { symbol: 'id', lexema: 'test' },
   { symbol: '=', lexema: '=' },
   { symbol: 'numero', lexema: '1' },
   { symbol: ';', lexema: ';' }
 ]
 ```
+## 2. Analizador Sintactico
+
