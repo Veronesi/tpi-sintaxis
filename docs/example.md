@@ -5,7 +5,7 @@ test = 10;
 ```
 
 ## 1. Analizador Léxico
-#### 1.1 Inicializacion del analizador [app.ts:35](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/app.ts#L35)
+#### 1.1 Inicializacion del analizador pasandole como parametro el código fuente [app.ts:35](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/app.ts#L35)
 ```js
 let lexicalAnalizer = new LexicalAnalizer(data)
 ```
@@ -57,4 +57,49 @@ lexicalAnalizer.lexicals = [
 ]
 ```
 ## 2. Analizador Sintactico
+#### 2.1 Inicializacion del analizador pasandole como parametro los componentes lexicos obtenidos en el anterior paso [app.ts:45](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/app.ts#L45)
+#### 2.1.1 Cargar la TAS [tools/SyntacticAnalyzer.ts:26](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L26-L27)
 
+#### 2.1.2 Agregar en la pila el simbolo final `$` [tools/SyntacticAnalyzer.ts:32](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L32-L36)
+
+#### 2.1.3 Agregar la variable iniciarl `<Programa>` [tools/SyntacticAnalyzer.ts:39](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L39-L44)
+
+#### 2.1.4 Inicializamos el arbol de derivación [tools/SyntacticAnalyzer.ts:47](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L47-L52)
+
+#### 2.2 Analizar los token para generar el arbol de derivacion
+#### 2.2.1 Obtenemos el ultimo elemento de la pila y el el proximo token [tools/SyntacticAnalyzer.ts:59](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L59-L60)
+#### 2.2.2 Analizamos si es una variable o un terminal
+#### 2.2.2-A si es una variable: obtenemos los elementos de la TAS generados por el token obtenido y el ultimo elemento de la pila (variable), agregando estos nuevos elementos a la pila y al arbol [tools/SyntacticAnalyzer.ts:93](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L93-L115)
+```js
+// ejemplo: analizando el primer token
+// Ultimo elemento en la pila: <Programa>
+// Token a analizar "vars" (palabra reservada)
+// como <Programa> es una variable:
+
+// Pila inicial
+stack = [
+  { symbol: '$', lexema: '$' },
+  { symbol: '<Programa>' }
+]
+
+TAS.getElements(Variable.PROGRAMA, Terminal.VARS)
+
+cell = ["<DeclaracionVariables>", "<Cuerpo>"]
+// lo insertamos en el arbol:
+
+// └><Programa>
+//    ├><DeclaracionVariables>
+//    └><Cuerpo>
+
+// Pila resultante
+stack = [
+  { symbol: '$', lexema: '$' },
+  { symbol: '<Cuerpo>' },
+  { symbol: '<DeclaracionVariables>' }
+]
+
+```
+
+#### 2.2.2-B si es un terminal: verificamos que el ultimo elemento de la pila y el token a analizar sean los mimsmos, caso contrario generara un error.
+
+####
