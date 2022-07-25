@@ -76,6 +76,9 @@ lexicalAnalizer.lexicals = [
 // Token a analizar "vars" (palabra reservada)
 // como <Programa> es una variable:
 
+// Arbol inicial
+// └><Programa>
+
 // Pila inicial
 stack = [
   { symbol: '$', lexema: '$' },
@@ -100,6 +103,83 @@ stack = [
 
 ```
 
-#### 2.2.2-B si es un terminal: verificamos que el ultimo elemento de la pila y el token a analizar sean los mimsmos, caso contrario generara un error.
+#### 2.2.2-B si es un terminal: verificamos que el ultimo elemento de la pila y el token a analizar sean los mimsmos, caso contrario generara un error. [tools/SyntacticAnalyzer.ts:82](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L82-L87)
+```js
+// ejemplo: analizando el primer token
+// Ultimo elemento en la pila: "vars"
+// Token a analizar "vars" (palabra reservada)
+// como "vars" es un terminal:
 
-####
+// Arbol inicial
+
+// └><Programa>
+//    ├><DeclaracionVariables>
+//      ├>vars [vars]
+//      └><ListaVariables>
+//    └><Cuerpo>
+
+// Pila inicial
+stack = [
+  { symbol: '$', lexema: '$' },
+  { symbol: '<Cuerpo>' },
+  { symbol: '<ListaVariables>' },
+  { symbol: 'vars', lexema: 'vars' }
+]
+
+// como el ultimo elemento en la pila y el token a analizar es el terminal "Token", lo eliminamos de la pila y lo insertamos en el arbol,
+// ahora el puntero apunta al token { symbol: 'id', lexema: 'test' }
+
+// └><Programa>
+//    ├><DeclaracionVariables>
+//      ├>vars [vars]
+//      └><ListaVariables>
+//    └><Cuerpo>
+
+// Pila inicial
+stack = [
+  { symbol: '$', lexema: '$' },
+  { symbol: '<Cuerpo>' },
+  { symbol: '<ListaVariables>' },
+]
+
+
+```
+#### 2.3 Completar el arbol: para esto verificamos si el unico simbolo en la pila es el simoblo `$`, y si el arbol esta completo (si todas las variables generan terminales), en caso contrario tratamos de completarlo, ya que puede ser que haya mas variables pero estos generen `epsilon`.
+
+#### 2.3.1 verificamos si la proxima variable 'vacia' genera a epsilon [tools/SyntacticAnalyzer.ts:135](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L135)
+
+En el ejemplo, al terminar de analizar queda `<CuerpoFin>` sin generar nada, en este caso `<CuerpoFin>` genera a `epsilon`, por lo que el arbol quedara completo
+```diff
+
+└><Programa>
+   ├><DeclaracionVariables>
+      ├>vars [vars]
+      └><ListaVariables>
+         ├>id [test]
+         └><FinListaVariables>
+            └>ε [ε]
+   └><Cuerpo>
+      ├><Sentencia>
+         └><Asignacion>
+            ├>id [test]
+            ├>= [=]
+            └><Expresion>
+               ├><SiguienteSR>
+                  ├><SiguienteMD>
+                     ├><SiguientePR>
+                        └>numero [1]
+                     └><Operador3>
+                        └>ε [ε]
+                  └><Operador2>
+                     └>ε [ε]
+               └><Operador1>
+                  └>ε [ε]
+      ├>; [;]
+-      └><CuerpoFin>
+
+{
+  variable: Variable.CuerpoFin,
+  terminal: Terminal.epsilon,
++  elements: [ Terminal.epsilon ]
+}
+```
