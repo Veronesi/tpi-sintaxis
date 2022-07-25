@@ -183,3 +183,15 @@ En el ejemplo, al terminar de analizar queda `<CuerpoFin>` sin generar nada, en 
 +  elements: [ Terminal.epsilon ]
 }
 ```
+### 3 Analizador semantico 
+#### 3.1 inicializamos el analizador pasandole como parametro arbol de derivacion y dando como resultado la tabla de variables [tools/SemanticAnalyzer.ts:26](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SemanticAnalyzer.ts#L26)
+#### 3.2.1 Obtenemos las variables declaradas y verificamos que solo esten declaradas una unica vez cada una [tools/SemanticAnalyzer.ts:34](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SemanticAnalyzer.ts#L34-L36)
+
+#### 3.2.2 Verificamos si todas las variables que se utilizaran en el programa estan declaradas [tools//SemanticAnalyzer.ts:80](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SemanticAnalyzer.ts#L69-L80)
+
+#### 3.3 Resultado del analizador
+```js
+[ { name: 'test', type: 3, value: 0 } ]
+```
+
+### 4 Interprete
