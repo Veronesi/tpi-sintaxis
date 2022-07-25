@@ -19,6 +19,7 @@ const commands = [
     description: "Verifica si sos mayor de edad",
     command: "npm run interpeter edad"
   }]
+
 if (process.argv.length < 3) {
   console.log("Error: no se especifico el nombre de archivo\n Ej: npm run interpeter <filename>");
   process.exit();
