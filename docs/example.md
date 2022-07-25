@@ -22,9 +22,41 @@ InputString {
 #### 1.2 Generación de tokens [app.ts:38](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/app.ts#L37-L39)
 En esta parte el analizador se encarga de ir leyendo caracter por caracter y dependiendo del valor del mismo tomara una decision u otra, finalizando cuando se terminen de analizar todos los caracteres.
 
+```js
+while (!lexicalAnalizer.inputString.overflow()) {
+  lexicalAnalizer.parser()
+}
+```
+
 #### 1.2.1 obtiene el proximo caracter [tools/LexicalAnalyzer.ts:30](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/LexicalAnalyzer.ts#L30)
+```js
+char = this.inputString.next()
+```
 #### 1.2.2 verifica si se trata de un número, letra o un simbolo [tools/LexicalAnalyzer.ts:34](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/LexicalAnalyzer.ts#L34-L38)
+```js
+let groups = char.match(/^(?<string>[A-z])|(?<number>\d)|(?<symbol>\D)/)?.groups
+let nextChar = { type: 'NaT', lexema: 'NaL' }
+for (let typeChar in groups) {
+  nextChar = groups[typeChar] ? { type: typeChar, lexema: groups[typeChar] } : nextChar;
+}
+```
 #### 1.2.3 Si es el primer elemento en la pila pasa al proximo, sino verifica si es un token o si se deberá seguir analizando [tools/LexicalAnalyzer.ts:40](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/LexicalAnalyzer.ts#L40-L54)
+
+```js
+if (stackChar.length) {
+// Verificamos si es valido:
+  if (this.checkTypeValidate(stackChar[0], nextChar, stackChar[stackChar.length - 1], stackChar.length)) {
+    stackChar.push(nextChar)
+  } else {
+    complete = true
+    // Creamos un nuevo lexema
+     this.inputString.back()
+      this.setLexical(stackChar)
+    }
+  } else {
+    stackChar.push(nextChar)
+}
+```
 
 en el caso de que el proximo caracter no sea valido, se vuelve el puntero un paso atras y la pila de caracteres se convierte en un componente lexico y se vacia la misma.
 
@@ -44,7 +76,9 @@ LexicalAnalyzer.checkTypeValidate({ type: 'string', lexema: 'v' } { type: 'strin
 // posiblemente una palabra reservada o una variable
 ```
 #### 1.2.4 una vez que sabemos que la pila es un componente lexico, transformamos la pila en un componente. para esto se verifica si es un String, Number, ademas de analizar previamente si es una palabra reservada. [tools/LexicalAnalyzer.ts:67](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/LexicalAnalyzer.ts#L67-L124)
-
+```js
+LexicalAnalyzer.setLexical(stackChar: Array<StackChar>)
+```
 #### 1.2.5 Una vez que se terminaron de analizar todos los caracteres y se insertaron los tokens en `LexicalAnalyzer.lexicals`, se pasa al siguiente paso.
 ```js
 lexicalAnalizer.lexicals = [
@@ -58,18 +92,53 @@ lexicalAnalizer.lexicals = [
 ```
 ## 2. Analizador Sintactico
 #### 2.1 Inicializacion del analizador pasandole como parametro los componentes lexicos obtenidos en el anterior paso [app.ts:45](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/app.ts#L45)
+```js
+const syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalizer.lexicals);
+```
 #### 2.1.1 Cargar la TAS [tools/SyntacticAnalyzer.ts:26](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L26-L27)
-
+```js
+this.TAS = new TAS()
+this.TAS.load(table)
+ ```
 #### 2.1.2 Agregar en la pila el simbolo final `$` [tools/SyntacticAnalyzer.ts:32](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L32-L36)
-
+```js
+this.stack.push({
+  symbol: SymbolGramatical.peso,
+  pointer: Math.random(),
+  lexema: '$'
+})
+```
 #### 2.1.3 Agregar la variable iniciarl `<Programa>` [tools/SyntacticAnalyzer.ts:39](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L39-L44)
-
+```js
+let newItemSack: Stack = {
+  symbol: SymbolGramatical.Programa,
+  pointer: Math.random(),
+  lexema: ''
+}
+this.stack.push(newItemSack)
+```
 #### 2.1.4 Inicializamos el arbol de derivación [tools/SyntacticAnalyzer.ts:47](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L47-L52)
-
+```js
+this.derivationTree = new Tree({
+  symbolGramatical: SymbolGramatical.Programa,
+  lexema: '',
+  childs: [],
+  pointer: newItemSack.pointer
+})
+```
 #### 2.2 Analizar los token para generar el arbol de derivacion
 #### 2.2.1 Obtenemos el ultimo elemento de la pila y el el proximo token [tools/SyntacticAnalyzer.ts:59](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L59-L60)
+```js
+let top = this.stack.pop()
+let symbol = this.inputString[this.pointer];
+```
 #### 2.2.2 Analizamos si es una variable o un terminal
 #### 2.2.2-A si es una variable: obtenemos los elementos de la TAS generados por el token obtenido y el ultimo elemento de la pila (variable), agregando estos nuevos elementos a la pila y al arbol [tools/SyntacticAnalyzer.ts:93](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L93-L115)
+```js
+let cell: SymbolGramatical[] = this.TAS.getElements(top.symbol.toVariable(), symbol.symbol.toTerminal())
+```
+
+
 ```js
 // ejemplo: analizando el primer token
 // Ultimo elemento en la pila: <Programa>
@@ -104,6 +173,16 @@ stack = [
 ```
 
 #### 2.2.2-B si es un terminal: verificamos que el ultimo elemento de la pila y el token a analizar sean los mimsmos, caso contrario generara un error. [tools/SyntacticAnalyzer.ts:82](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L82-L87)
+```js
+this.derivationTree.setTerminal({
+  symbol: top.symbol,
+  pointer: top.pointer,
+  lexema: symbol.lexema
+})
+this.pointer++;
+```
+
+
 ```js
 // ejemplo: analizando el primer token
 // Ultimo elemento en la pila: "vars"
@@ -147,6 +226,9 @@ stack = [
 #### 2.3 Completar el arbol: para esto verificamos si el unico simbolo en la pila es el simoblo `$`, y si el arbol esta completo (si todas las variables generan terminales), en caso contrario tratamos de completarlo, ya que puede ser que haya mas variables pero estos generen `epsilon`.
 
 #### 2.3.1 verificamos si la proxima variable 'vacia' genera a epsilon [tools/SyntacticAnalyzer.ts:135](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SyntacticAnalyzer.ts#L135)
+```js
+this.TAS.getElements(nextEmptyVariable.symbol, Terminal.epsilon)
+```
 
 En el ejemplo, al terminar de analizar queda `<CuerpoFin>` sin generar nada, en este caso `<CuerpoFin>` genera a `epsilon`, por lo que el arbol quedara completo
 ```diff
@@ -185,10 +267,30 @@ En el ejemplo, al terminar de analizar queda `<CuerpoFin>` sin generar nada, en 
 ```
 ### 3 Analizador semantico 
 #### 3.1 inicializamos el analizador pasandole como parametro arbol de derivacion y dando como resultado la tabla de variables [tools/SemanticAnalyzer.ts:26](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SemanticAnalyzer.ts#L26)
+```js
+this.derivationTree = derivationTree;
+```
 #### 3.2.1 Obtenemos las variables declaradas y verificamos que solo esten declaradas una unica vez cada una [tools/SemanticAnalyzer.ts:34](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SemanticAnalyzer.ts#L34-L36)
+```js
+let treeVars = this.derivationTree.getNodeByName(Variable.ListaVariables);
+if (treeVars.pointer > -1)
+  this.setVars(treeVars)
+```
 
 #### 3.2.2 Verificamos si todas las variables que se utilizaran en el programa estan declaradas [tools//SemanticAnalyzer.ts:80](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SemanticAnalyzer.ts#L69-L80)
-
+```js
+checkVariablesIsDeclared(tree = this.derivationTree) {
+  if (tree.symbol.typeof() == Terminal.toString() && tree.symbol.toTerminal() == Terminal.id) {
+    if (!this.vars.find(e => e.name == tree.lexema)) {
+      Warn.criticalError(`ReferenceError: '${tree.lexema}' is not defined.`)
+      process.exit()
+    }
+  }
+  for (let child of tree.childs) {
+    this.checkVariablesIsDeclared(child)
+  }
+}
+```
 #### 3.3 Resultado del analizador
 ```js
 [ { name: 'test', type: 3, value: 0 } ]
