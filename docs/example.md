@@ -277,7 +277,7 @@ if (treeVars.pointer > -1)
   this.setVars(treeVars)
 ```
 
-#### 3.2.2 Verificamos si todas las variables que se utilizaran en el programa estan declaradas [tools//SemanticAnalyzer.ts:80](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SemanticAnalyzer.ts#L69-L80)
+#### 3.2.2 Verificamos si todas las variables que se utilizaran en el programa estan declaradas [tools/SemanticAnalyzer.ts:80](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/SemanticAnalyzer.ts#L69-L80)
 ```js
 checkVariablesIsDeclared(tree = this.derivationTree) {
   if (tree.symbol.typeof() == Terminal.toString() && tree.symbol.toTerminal() == Terminal.id) {
@@ -297,3 +297,76 @@ checkVariablesIsDeclared(tree = this.derivationTree) {
 ```
 
 ### 4 Interprete
+
+#### 4.1 Inicializamos el interprete pasandole el arbol de derivacion y la lista de variables
+[tools/Interpreter.ts:38](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L38-L41)
+```ts
+constructor(derivationTree: Tree, vars: Var[] = []) {
+  this.derivationTree = derivationTree;
+  this.vars = vars
+}
+```
+
+#### 4.2 Ejecucion del inteprete, este analizara bloques de codigo de tipo `<Sentencia>` (y `<CuerpoFin>` que contienen sentencias)
+#### 4.2.1 Verificamos si el primer nodo del arbol se encuentra vacio, en dicho caso finaliza el interprete.
+[tools/Interpreter.ts:52](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L52-L53)
+```js
+if (firstChild.symbol.typeof() != Varaible.toString())
+  return resolve(tree.deleteChild());
+```
+
+#### 4.2.2 Si el proximo nodo a analizar en una `<Sentencia>`, la ejecutamos y borramos este nodo para seguir interpretenado el arbol, si es un `<CuerpoFin>` ejecutamos el primer hijo que es una `<Sentencia>` y pasamos a analizar el 3er hijo, (para los dos casos ejecutamos la `<Sentencia>`)
+[tools/Interpreter.ts:55](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L55-L76)
+```ts
+switch (firstChild.symbol.toVariable()) {
+    case Varaible.Sentencia:
+        // Se trata de una sentencia
+        this.handleSentencia(firstChild)
+            .then(() => resolve(tree.deleteChild()))
+            .catch(err => console.log("error1", err))
+        break;
+    case Varaible.CuerpoFin:
+        // Verificamos si es una e-produccion;
+        if (firstChild.childs[0].symbol == Terminal.epsilon)
+            return reject();
+
+        this.handleSentencia(firstChild.childs[0]).then(() => {
+            this.start(firstChild.childs[2]).then(() => {
+                resolve(tree.deleteChild())
+            }).catch(err => console.log("error2", err))
+        }).catch(() => emptyTree);
+        break;
+    default:
+        console.log("ups:", firstChild.symbol.toVariable())
+        break;
+}
+```
+
+#### 4.2.3 Al analizar una sentencia y verficamos si el primer nodo hijo es una `<Asignacion>`, `<Lectura>`, `<Escritura>`, etc.
+[tools/Interpreter.ts:89](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L89-L111)
+```ts
+switch (sentencia.symbol.toVariable()) {
+    case Varaible.Asignacion:
+        this.handleAsignacion(sentencia)
+        resolve(emptyTree);
+        break;
+    case Varaible.Lectura:
+        this.handleLectura(sentencia).then(() => resolve(emptyTree));
+        break;
+    case Varaible.Escritura:
+        this.handleEscritura(sentencia);
+        resolve(emptyTree);
+        break;
+    case Varaible.Condicional:
+        this.handleCondicional(sentencia).then(() => resolve(emptyTree)).catch(() => resolve(emptyTree));
+        break;
+    case Varaible.Ciclo:
+        this.handleCiclo(sentencia).then(() => resolve(emptyTree)).catch(() => resolve(emptyTree));
+        break;
+    default:
+        console.log("Error capo ", sentencia.symbol.toVariable())
+        reject(tree)
+        process.exit()
+}
+```
+
