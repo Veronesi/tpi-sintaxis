@@ -4,7 +4,6 @@
 
 - [Instalacion](#instalacion)
 - [guia de uso](#guia-de-uso)
-- [Lista de comandos](#lista-de-comandos)
 - [Analizador lexico](#analisis-lexico)
 - [Analizador sintactico](#analisis-sintactico)
 - [Evaluador](#evaluador)
@@ -73,18 +72,6 @@ write("la variable wr vale: ", wr);
 ```
 ```
 output: la variable wr vale 65
-```
-## lista de comandos
-```
-    tree ................................ Muestra el arbol sintactico
-    lexicals ............................ Muestra la tabla de componentes lexicos
-    vars ................................ Muestra el valor final de las variables
-
-    help ................................ Muestra informacion sobre los comandos
-    
-    characters .......................... Lista los caracteres
-    reserved-words ...................... Lista las palabras reservadas
-    productions ......................... Lista las producciones
 ```
 
 `npm run interpeter fibonacci lexicals`
