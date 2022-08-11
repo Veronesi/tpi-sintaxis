@@ -298,8 +298,7 @@ checkVariablesIsDeclared(tree = this.derivationTree) {
 
 ### 4 Interprete
 
-#### 4.1 Inicializamos el interprete pasandole el arbol de derivacion y la lista de variables
-[tools/Interpreter.ts:38](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L38-L41)
+#### 4.1 Inicializamos el interprete pasandole el arbol de derivacion y la lista de variables [tools/Interpreter.ts:38](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L38-L41)
 ```ts
 constructor(derivationTree: Tree, vars: Var[] = []) {
   this.derivationTree = derivationTree;
@@ -308,15 +307,13 @@ constructor(derivationTree: Tree, vars: Var[] = []) {
 ```
 
 #### 4.2 Ejecucion del inteprete, este analizara bloques de codigo de tipo `<Sentencia>` (y `<CuerpoFin>` que contienen sentencias)
-#### 4.2.1 Verificamos si el primer nodo del arbol se encuentra vacio, en dicho caso finaliza el interprete.
-[tools/Interpreter.ts:52](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L52-L53)
+#### 4.2.1 Verificamos si el primer nodo del arbol se encuentra vacio, en dicho caso finaliza el interprete. [tools/Interpreter.ts:52](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L52-L53)
 ```js
 if (firstChild.symbol.typeof() != Varaible.toString())
   return resolve(tree.deleteChild());
 ```
 
-#### 4.2.2 Si el proximo nodo a analizar en una `<Sentencia>`, la ejecutamos y borramos este nodo para seguir interpretenado el arbol, si es un `<CuerpoFin>` ejecutamos el primer hijo que es una `<Sentencia>` y pasamos a analizar el 3er hijo, (para los dos casos ejecutamos la `<Sentencia>`)
-[tools/Interpreter.ts:55](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L55-L76)
+#### 4.2.2 Si el proximo nodo a analizar en una `<Sentencia>`, la ejecutamos y borramos este nodo para seguir interpretenado el arbol, si es un `<CuerpoFin>` ejecutamos el primer hijo que es una `<Sentencia>` y pasamos a analizar el 3er hijo, (para los dos casos ejecutamos la `<Sentencia>`) [tools/Interpreter.ts:55](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L55-L76)
 ```ts
 switch (firstChild.symbol.toVariable()) {
     case Varaible.Sentencia:
@@ -342,8 +339,7 @@ switch (firstChild.symbol.toVariable()) {
 }
 ```
 
-#### 4.2.3 Al analizar una sentencia y verficamos si el primer nodo hijo es una `<Asignacion>`, `<Lectura>`, `<Escritura>`, etc.
-[tools/Interpreter.ts:89](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L89-L111)
+#### 4.2.3 Al analizar una sentencia y verficamos si el primer nodo hijo es una `<Asignacion>`, `<Lectura>`, `<Escritura>`, etc. [tools/Interpreter.ts:89](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L89-L111)
 ```ts
 switch (sentencia.symbol.toVariable()) {
     case Varaible.Asignacion:
@@ -370,3 +366,75 @@ switch (sentencia.symbol.toVariable()) {
 }
 ```
 
+#### 4.2.3.1 Asignación: buscamos la variable, ejecutamos la expresion y le asignamos su nuevo valor [tools/Interpreter.ts:117](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L117-L121)
+```ts
+handleAsignacion(tree: Tree): Tree {
+  const variable = this.nameToVariable(tree.childs[0].lexema);
+  variable.value = this.expresion(tree.childs[2]);
+  return emptyTree;
+}
+```
+
+#### 4.2.3.2 Lectura: muestra un mensaje en consola y luego busca la variable en el arbol y reasigna su nuevo valor [tools/Interpreter.ts:131](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L131-L135)
+
+```ts
+const childNode = tree.getChildByName(Terminal.cadena);
+const message: string = childNode.lexema;
+rl.question(message, (answer: string) => {
+  const childNodeVariable = tree.getChildByName(Terminal.id);
+  const nameVariable = childNodeVariable.lexema;
+  this.nameToVariable(nameVariable).value = Number(answer);
+  rl.close();
+  resolve(emptyTree);
+})
+```
+#### 4.2.3.3 Escritura: muestra un mensaje en consola. [tools/Interpreter.ts:142](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L142)
+```ts
+const message: string = tree.getChildByName(Terminal.cadena).lexema;
+const expresion = tree.getChildByName(Varaible.Expresion);
+const value = this.expresion(expresion);
+console.log(`${message}${value}`);
+```
+
+#### 4.2.3.4 Condicional: obtenemos del arbol el nodo condicion (y ejecutamos para obtener su valor) y el bloque a ejecutar, en el caso de que no cumpla con la misma, se analiza si en el bloque de `<CierreCondicion>` su nodo hijo es distitno que `Epsilon`. ejecutamos el bloque `ELSE` [tools/Interpreter.ts:166](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L166-L177)
+```ts
+handleCondicional(tree: Tree): Promise<Tree> {
+  const condicion = this.condicion(tree.getChildByName(Varaible.Condicion));
+  const bloque = tree.getChildByName(Varaible.Bloque);
+
+  // si cumple el IF
+  if (condicion) return this.start(bloque.childs[1]);
+
+  const cierreCondicion = tree.getChildByName(Varaible.CierreCondicion);
+  
+  if (cierreCondicion.childs[0].symbol == Terminal.epsilon) return emptyPromise;
+
+  // si existe el ELSE y no cumplio el IF, ejecutamos el ELSE
+  return this.start(cierreCondicion.getChildByName(Varaible.Bloque).childs[1]);
+}
+```
+
+#### 4.2.3.5 Ciclo: similal a la condicion, solo que hacemos una copia del objeto `<Bloque>`, ya que este se debera repetir hasta que cumpla con la condición [tools/Interpreter.ts:146](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L146-L164)
+```ts
+handleCiclo(tree: Tree): Promise<Tree> {
+  const condicion = this.condicion(tree.getChildByName(Varaible.Condicion));
+  const bloque = tree.getChildByName(Varaible.Bloque);
+
+  if (!condicion) return emptyPromise;
+
+  const promise: Promise<Tree> = new Promise((resolve, reject) => {
+
+      // Creamos una copia del bloque
+      const copyBloque: Tree = Tree.deepCopy(bloque.childs[1]);
+      this.start(copyBloque).then(() => {
+          this.handleCiclo(tree).then(() => {
+              resolve(emptyTree)
+          })
+      }).catch(() => { console.log("ERR_HANDLE_CICLE"); resolve(emptyTree) })
+  });
+
+  return promise;
+}
+```
+
+#### 4.3 El interpete finaliza una vez que termine de ejecutar todo el arbol, ya que Interpreter.start() es una funcion recursiva.
