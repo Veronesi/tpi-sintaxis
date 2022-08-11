@@ -414,7 +414,7 @@ handleCondicional(tree: Tree): Promise<Tree> {
 }
 ```
 
-#### 4.2.3.5 Ciclo: similal a la condicion, solo que hacemos una copia del objeto `<Bloque>`, ya que este se debera repetir hasta que cumpla con la condición [tools/Interpreter.ts:146](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L146-L164)
+#### 4.2.3.5 Ciclo: similar a la condicion, solo que hacemos una copia del objeto `<Bloque>`, ya que este se debera repetir hasta que cumpla con la condición [tools/Interpreter.ts:146](https://github.com/Veronesi/tpi-sintaxis/blob/6362e5e7cd69969dcbfa63599fd24df1f9977c6c/app/tools/Interpreter.ts#L146-L164)
 ```ts
 handleCiclo(tree: Tree): Promise<Tree> {
   const condicion = this.condicion(tree.getChildByName(Varaible.Condicion));
