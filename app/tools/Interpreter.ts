@@ -127,7 +127,6 @@ class Interpreter {
                 input: process.stdin,
                 output: process.stdout
             });
-
             rl.question(tree.getChildByName(Terminal.cadena).lexema, (answer: string) => {
                 this.nameToVariable(tree.getChildByName(Terminal.id).lexema).value = Number(answer)
                 rl.close()
@@ -292,9 +291,9 @@ class Interpreter {
      * @param name nombre de la variable
      */
     nameToVariable(name: string): Var {
-        let varaible = this.vars.find(variable => variable.name === name);
-        if (varaible)
-            return varaible
+        let variable = this.vars.find(variable => variable.name === name);
+        if (variable)
+            return variable
         return { name: 'ID', type: DataType.Null, value: 0 }
     }
 }

@@ -9,7 +9,7 @@ import SymbolGramatical from '../class/SymbolGramatical'
  * @param elements Elementos que genera la variable con respecto al terminal
  */
 interface Cell {
-    varaible: Variable,
+    variable: Variable,
     terminal: Terminal,
     elements: Array<SymbolGramatical>
 }

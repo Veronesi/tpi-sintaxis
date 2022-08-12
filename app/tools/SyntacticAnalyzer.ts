@@ -6,7 +6,7 @@ import { Tree, EmptyTerminal } from "../class/Tree"
 import LexicalItem from "../class/LexicalItem"
 import Terminal from "../class/Terminal"
 import Warn from './Warn'
-
+ 
 /**
  * @description Analizador Sintáctico Descendente Predictivo No Recursivo
  * @property TAS: la tabla Variable/Terminal
@@ -55,6 +55,8 @@ class SyntacticAnalizer {
     }
 
     async _analizer(): Promise<Tree> {
+        Warn.primary("Stack:");
+        Warn.table(this.stack);
         Warn.info(`SyntacicAnalizer:_analizer()`)
         let top = this.stack.pop()
         let symbol = this.inputString[this.pointer];
@@ -123,6 +125,9 @@ class SyntacticAnalizer {
      * @description Completa el arbol con e-produciones si es posible
      */
     completeTree(): Tree {
+        Warn.title(`check is completeTree`)
+        this.derivationTree.show()
+
         let top = this.stack[this.stack.length - 1]
 
         let isCompleted = this.derivationTree.isCompleted()

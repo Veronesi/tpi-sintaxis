@@ -24,17 +24,17 @@ class TAS {
         table.forEach(row => {
 
             // Cargamos la tabla
-            Object.keys(this.table).includes(row.varaible)
+            Object.keys(this.table).includes(row.variable)
                 ? null
                 // Si es la primera entrada para la variable
-                : this.table[row.varaible] = []
+                : this.table[row.variable] = []
 
-            Object.keys(this.table[row.varaible]).includes(row.terminal)
+            Object.keys(this.table[row.variable]).includes(row.terminal)
                 ? null
                 // Si es la primera celda que se va a crear para esta variable la inicializamos
-                : this.table[row.varaible][row.terminal] = [];
+                : this.table[row.variable][row.terminal] = [];
 
-            this.table[row.varaible][row.terminal] = row.elements
+            this.table[row.variable][row.terminal] = row.elements
         })
     }
 

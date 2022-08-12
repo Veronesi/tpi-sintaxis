@@ -11,49 +11,49 @@ import Terminal from '../class/Terminal'
 const table: Array<Cell> = [
     /* Programa */
     {
-        varaible: Variable.Programa,
+        variable: Variable.Programa,
         terminal: Terminal.vars,
         elements: [
             Variable.DeclaracionVariables,
             Variable.Cuerpo
         ]
     }, {
-        varaible: Variable.Programa,
+        variable: Variable.Programa,
         terminal: Terminal.id,
         elements: [
             Variable.DeclaracionVariables,
             Variable.Cuerpo
         ]
     }, {
-        varaible: Variable.Programa,
+        variable: Variable.Programa,
         terminal: Terminal.if,
         elements: [
             Variable.DeclaracionVariables,
             Variable.Cuerpo
         ]
     }, {
-        varaible: Variable.Programa,
+        variable: Variable.Programa,
         terminal: Terminal.while,
         elements: [
             Variable.DeclaracionVariables,
             Variable.Cuerpo
         ]
     }, {
-        varaible: Variable.Programa,
+        variable: Variable.Programa,
         terminal: Terminal.read,
         elements: [
             Variable.DeclaracionVariables,
             Variable.Cuerpo
         ]
     }, {
-        varaible: Variable.Programa,
+        variable: Variable.Programa,
         terminal: Terminal.write,
         elements: [
             Variable.DeclaracionVariables,
             Variable.Cuerpo
         ]
     }, {
-        varaible: Variable.Programa,
+        variable: Variable.Programa,
         terminal: Terminal.peso,
         elements: [
             Terminal.peso
@@ -62,45 +62,45 @@ const table: Array<Cell> = [
     /* DeclaracionVariables */
 
     {
-        varaible: Variable.DeclaracionVariables,
+        variable: Variable.DeclaracionVariables,
         terminal: Terminal.vars,
         elements: [
             Terminal.vars,
             Variable.ListaVariables
         ]
     }, {
-        varaible: Variable.DeclaracionVariables,
+        variable: Variable.DeclaracionVariables,
         terminal: Terminal.id,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.DeclaracionVariables,
+        variable: Variable.DeclaracionVariables,
         terminal: Terminal.if,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.DeclaracionVariables,
+        variable: Variable.DeclaracionVariables,
         terminal: Terminal.while,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.DeclaracionVariables,
+        variable: Variable.DeclaracionVariables,
         terminal: Terminal.read,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.DeclaracionVariables,
+        variable: Variable.DeclaracionVariables,
         terminal: Terminal.write,
         elements: [
             Terminal.epsilon,
         ]
     },
     {
-        varaible: Variable.DeclaracionVariables,
+        variable: Variable.DeclaracionVariables,
         terminal: Terminal.epsilon,
         elements: [
             Terminal.epsilon
@@ -108,7 +108,7 @@ const table: Array<Cell> = [
     },
     /* ListaVariables */
     {
-        varaible: Variable.ListaVariables,
+        variable: Variable.ListaVariables,
         terminal: Terminal.id,
         elements: [
             Terminal.id,
@@ -117,7 +117,7 @@ const table: Array<Cell> = [
     },
     /* FinListaVariables */
     {
-        varaible: Variable.FinListaVariables,
+        variable: Variable.FinListaVariables,
         terminal: Terminal.coma,
         elements: [
             Terminal.coma,
@@ -126,7 +126,7 @@ const table: Array<Cell> = [
         ]
     },
     {
-        varaible: Variable.FinListaVariables,
+        variable: Variable.FinListaVariables,
         terminal: Terminal.epsilon,
         elements: [
             Terminal.epsilon
@@ -134,7 +134,7 @@ const table: Array<Cell> = [
     },
     /* Cuerpo */
     {
-        varaible: Variable.Cuerpo,
+        variable: Variable.Cuerpo,
         terminal: Terminal.id,
         elements: [
             Variable.Sentencia,
@@ -142,7 +142,7 @@ const table: Array<Cell> = [
             Variable.CuerpoFin
         ]
     }, {
-        varaible: Variable.Cuerpo,
+        variable: Variable.Cuerpo,
         terminal: Terminal.if,
         elements: [
             Variable.Sentencia,
@@ -150,7 +150,7 @@ const table: Array<Cell> = [
             Variable.CuerpoFin
         ]
     }, {
-        varaible: Variable.Cuerpo,
+        variable: Variable.Cuerpo,
         terminal: Terminal.while,
         elements: [
             Variable.Sentencia,
@@ -158,7 +158,7 @@ const table: Array<Cell> = [
             Variable.CuerpoFin
         ]
     }, {
-        varaible: Variable.Cuerpo,
+        variable: Variable.Cuerpo,
         terminal: Terminal.read,
         elements: [
             Variable.Sentencia,
@@ -166,7 +166,7 @@ const table: Array<Cell> = [
             Variable.CuerpoFin
         ]
     }, {
-        varaible: Variable.Cuerpo,
+        variable: Variable.Cuerpo,
         terminal: Terminal.write,
         elements: [
             Variable.Sentencia,
@@ -176,7 +176,7 @@ const table: Array<Cell> = [
     },
     /* CuerpoFin */
     {
-        varaible: Variable.CuerpoFin,
+        variable: Variable.CuerpoFin,
         terminal: Terminal.id,
         elements: [
             Variable.Sentencia,
@@ -184,7 +184,7 @@ const table: Array<Cell> = [
             Variable.CuerpoFin
         ]
     }, {
-        varaible: Variable.CuerpoFin,
+        variable: Variable.CuerpoFin,
         terminal: Terminal.if,
         elements: [
             Variable.Sentencia,
@@ -192,7 +192,7 @@ const table: Array<Cell> = [
             Variable.CuerpoFin
         ]
     }, {
-        varaible: Variable.CuerpoFin,
+        variable: Variable.CuerpoFin,
         terminal: Terminal.while,
         elements: [
             Variable.Sentencia,
@@ -200,7 +200,7 @@ const table: Array<Cell> = [
             Variable.CuerpoFin
         ]
     }, {
-        varaible: Variable.CuerpoFin,
+        variable: Variable.CuerpoFin,
         terminal: Terminal.read,
         elements: [
             Variable.Sentencia,
@@ -208,7 +208,7 @@ const table: Array<Cell> = [
             Variable.CuerpoFin
         ]
     }, {
-        varaible: Variable.CuerpoFin,
+        variable: Variable.CuerpoFin,
         terminal: Terminal.write,
         elements: [
             Variable.Sentencia,
@@ -217,14 +217,14 @@ const table: Array<Cell> = [
         ]
     },
     {
-        varaible: Variable.CuerpoFin,
+        variable: Variable.CuerpoFin,
         terminal: Terminal.peso,
         elements: [
             Terminal.peso
         ]
     },
     {
-        varaible: Variable.CuerpoFin,
+        variable: Variable.CuerpoFin,
         terminal: Terminal.epsilon,
         elements: [
             Terminal.epsilon
@@ -232,31 +232,31 @@ const table: Array<Cell> = [
     },
     /* Sentencia */
     {
-        varaible: Variable.Sentencia,
+        variable: Variable.Sentencia,
         terminal: Terminal.id,
         elements: [
             Variable.Asignacion
         ]
     }, {
-        varaible: Variable.Sentencia,
+        variable: Variable.Sentencia,
         terminal: Terminal.if,
         elements: [
             Variable.Condicional
         ]
     }, {
-        varaible: Variable.Sentencia,
+        variable: Variable.Sentencia,
         terminal: Terminal.while,
         elements: [
             Variable.Ciclo
         ]
     }, {
-        varaible: Variable.Sentencia,
+        variable: Variable.Sentencia,
         terminal: Terminal.read,
         elements: [
             Variable.Lectura
         ]
     }, {
-        varaible: Variable.Sentencia,
+        variable: Variable.Sentencia,
         terminal: Terminal.write,
         elements: [
             Variable.Escritura
@@ -264,7 +264,7 @@ const table: Array<Cell> = [
     },
     /* Asignacion */
     {
-        varaible: Variable.Asignacion,
+        variable: Variable.Asignacion,
         terminal: Terminal.id,
         elements: [
             Terminal.id,
@@ -274,7 +274,7 @@ const table: Array<Cell> = [
     },
     /* Bloque */
     {
-        varaible: Variable.Bloque,
+        variable: Variable.Bloque,
         terminal: Terminal.llaveOpen,
         elements: [
             Terminal.llaveOpen,
@@ -284,28 +284,28 @@ const table: Array<Cell> = [
     },
     /* Expresion */
     {
-        varaible: Variable.Expresion,
+        variable: Variable.Expresion,
         terminal: Terminal.id,
         elements: [
             Variable.SiguienteSR,
             Variable.Operador1
         ]
     }, {
-        varaible: Variable.Expresion,
+        variable: Variable.Expresion,
         terminal: Terminal.menos,
         elements: [
             Variable.SiguienteSR,
             Variable.Operador1
         ]
     }, {
-        varaible: Variable.Expresion,
+        variable: Variable.Expresion,
         terminal: Terminal.parentesisOpen,
         elements: [
             Variable.SiguienteSR,
             Variable.Operador1
         ]
     }, {
-        varaible: Variable.Expresion,
+        variable: Variable.Expresion,
         terminal: Terminal.numero,
         elements: [
             Variable.SiguienteSR,
@@ -314,13 +314,13 @@ const table: Array<Cell> = [
     },
     /* Operador1 */
     {
-        varaible: Variable.Operador1,
+        variable: Variable.Operador1,
         terminal: Terminal.puntoYComa,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador1,
+        variable: Variable.Operador1,
         terminal: Terminal.mas,
         elements: [
             Terminal.mas,
@@ -328,7 +328,7 @@ const table: Array<Cell> = [
             Variable.Operador1
         ]
     }, {
-        varaible: Variable.Operador1,
+        variable: Variable.Operador1,
         terminal: Terminal.menos,
         elements: [
             Terminal.menos,
@@ -336,50 +336,50 @@ const table: Array<Cell> = [
             Variable.Operador1
         ]
     }, {
-        varaible: Variable.Operador1,
+        variable: Variable.Operador1,
         terminal: Terminal.parentesisClose,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador1,
+        variable: Variable.Operador1,
         terminal: Terminal.corcheteClose,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador1,
+        variable: Variable.Operador1,
         terminal: Terminal.mayor,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.Operador1,
+        variable: Variable.Operador1,
         terminal: Terminal.mayorIgual,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.Operador1,
+        variable: Variable.Operador1,
         terminal: Terminal.menorIgual,
         elements: [
             Terminal.epsilon,
         ]
     },{
-        varaible: Variable.Operador1,
+        variable: Variable.Operador1,
         terminal: Terminal.igual,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.Operador1,
+        variable: Variable.Operador1,
         terminal: Terminal.menor,
         elements: [
             Terminal.epsilon,
         ]
     },
     {
-        varaible: Variable.Operador1,
+        variable: Variable.Operador1,
         terminal: Terminal.epsilon,
         elements: [
             Terminal.epsilon
@@ -387,28 +387,28 @@ const table: Array<Cell> = [
     },
     /* SiguienteSR */
     {
-        varaible: Variable.SiguienteSR,
+        variable: Variable.SiguienteSR,
         terminal: Terminal.id,
         elements: [
             Variable.SiguienteMD,
             Variable.Operador2
         ]
     }, {
-        varaible: Variable.SiguienteSR,
+        variable: Variable.SiguienteSR,
         terminal: Terminal.menos,
         elements: [
             Variable.SiguienteMD,
             Variable.Operador2
         ]
     }, {
-        varaible: Variable.SiguienteSR,
+        variable: Variable.SiguienteSR,
         terminal: Terminal.parentesisOpen,
         elements: [
             Variable.SiguienteMD,
             Variable.Operador2
         ]
     }, {
-        varaible: Variable.SiguienteSR,
+        variable: Variable.SiguienteSR,
         terminal: Terminal.numero,
         elements: [
             Variable.SiguienteMD,
@@ -417,25 +417,25 @@ const table: Array<Cell> = [
     },
     /* Operador2 */
     {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.puntoYComa,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.mas,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.menos,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.por,
         elements: [
             Terminal.por,
@@ -443,7 +443,7 @@ const table: Array<Cell> = [
             Variable.Operador2
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.dividido,
         elements: [
             Terminal.dividido,
@@ -451,7 +451,7 @@ const table: Array<Cell> = [
             Variable.Operador2
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.resto,
         elements: [
             Terminal.resto,
@@ -459,62 +459,62 @@ const table: Array<Cell> = [
             Variable.Operador2
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.parentesisClose,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.or,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.and,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.corcheteClose,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.mayor,
         elements: [
             Terminal.epsilon,
         ]
     },{
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.mayorIgual,
         elements: [
             Terminal.epsilon,
         ]
     },{
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.menorIgual,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.igual,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.menor,
         elements: [
             Terminal.epsilon,
         ]
     },
     {
-        varaible: Variable.Operador2,
+        variable: Variable.Operador2,
         terminal: Terminal.epsilon,
         elements: [
             Terminal.epsilon
@@ -522,28 +522,28 @@ const table: Array<Cell> = [
     },
     /* SiguienteMD */
     {
-        varaible: Variable.SiguienteMD,
+        variable: Variable.SiguienteMD,
         terminal: Terminal.id,
         elements: [
             Variable.SiguientePR,
             Variable.Operador3
         ]
     }, {
-        varaible: Variable.SiguienteMD,
+        variable: Variable.SiguienteMD,
         terminal: Terminal.menos,
         elements: [
             Variable.SiguientePR,
             Variable.Operador3
         ]
     }, {
-        varaible: Variable.SiguienteMD,
+        variable: Variable.SiguienteMD,
         terminal: Terminal.parentesisOpen,
         elements: [
             Variable.SiguientePR,
             Variable.Operador3
         ]
     }, {
-        varaible: Variable.SiguienteMD,
+        variable: Variable.SiguienteMD,
         terminal: Terminal.numero,
         elements: [
             Variable.SiguientePR,
@@ -552,43 +552,43 @@ const table: Array<Cell> = [
     },
     /* Operador3 */
     {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.puntoYComa,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.mas,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.menos,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.por,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.dividido,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.resto,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.potencia,
         elements: [
             Terminal.potencia,
@@ -596,7 +596,7 @@ const table: Array<Cell> = [
             Variable.Operador3
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.raiz,
         elements: [
             Terminal.raiz,
@@ -604,62 +604,62 @@ const table: Array<Cell> = [
             Variable.Operador3
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.parentesisClose,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.or,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.and,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.corcheteClose,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.mayor,
         elements: [
             Terminal.epsilon
         ]
     },{
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.mayorIgual,
         elements: [
             Terminal.epsilon
         ]
     },{
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.menorIgual,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.igual,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.menos,
         elements: [
             Terminal.epsilon
         ]
     },
     {
-        varaible: Variable.Operador3,
+        variable: Variable.Operador3,
         terminal: Terminal.epsilon,
         elements: [
             Terminal.epsilon
@@ -667,20 +667,20 @@ const table: Array<Cell> = [
     },
     /* SiguientePR */
     {
-        varaible: Variable.SiguientePR,
+        variable: Variable.SiguientePR,
         terminal: Terminal.id,
         elements: [
             Terminal.id
         ]
     }, {
-        varaible: Variable.SiguientePR,
+        variable: Variable.SiguientePR,
         terminal: Terminal.menos,
         elements: [
             Terminal.menos,
             Variable.SiguientePR
         ]
     }, {
-        varaible: Variable.SiguientePR,
+        variable: Variable.SiguientePR,
         terminal: Terminal.parentesisOpen,
         elements: [
             Terminal.parentesisOpen,
@@ -688,7 +688,7 @@ const table: Array<Cell> = [
             Terminal.parentesisClose
         ]
     }, {
-        varaible: Variable.SiguientePR,
+        variable: Variable.SiguientePR,
         terminal: Terminal.numero,
         elements: [
             Terminal.numero
@@ -696,7 +696,7 @@ const table: Array<Cell> = [
     },
     /* Condicional */
     {
-        varaible: Variable.Condicional,
+        variable: Variable.Condicional,
         terminal: Terminal.if,
         elements: [
             Terminal.if,
@@ -709,13 +709,13 @@ const table: Array<Cell> = [
     },
     /* CierreCondicion */
     {
-        varaible: Variable.CierreCondicion,
+        variable: Variable.CierreCondicion,
         terminal: Terminal.puntoYComa,
         elements: [
             Terminal.epsilon,
         ]
     }, {
-        varaible: Variable.CierreCondicion,
+        variable: Variable.CierreCondicion,
         terminal: Terminal.else,
         elements: [
             Terminal.else,
@@ -723,7 +723,7 @@ const table: Array<Cell> = [
         ]
     },
     {
-        varaible: Variable.CierreCondicion,
+        variable: Variable.CierreCondicion,
         terminal: Terminal.epsilon,
         elements: [
             Terminal.epsilon
@@ -731,7 +731,7 @@ const table: Array<Cell> = [
     },
     /* Ciclo */
     {
-        varaible: Variable.Ciclo,
+        variable: Variable.Ciclo,
         terminal: Terminal.while,
         elements: [
             Terminal.while,
@@ -743,42 +743,42 @@ const table: Array<Cell> = [
     },
     /* Condicion */
     {
-        varaible: Variable.Condicion,
+        variable: Variable.Condicion,
         terminal: Terminal.id,
         elements: [
             Variable.SigCondicion,
             Variable.OpAndOr
         ]
     }, {
-        varaible: Variable.Condicion,
+        variable: Variable.Condicion,
         terminal: Terminal.menos,
         elements: [
             Variable.SigCondicion,
             Variable.OpAndOr
         ]
     }, {
-        varaible: Variable.Condicion,
+        variable: Variable.Condicion,
         terminal: Terminal.parentesisOpen,
         elements: [
             Variable.SigCondicion,
             Variable.OpAndOr
         ]
     }, {
-        varaible: Variable.Condicion,
+        variable: Variable.Condicion,
         terminal: Terminal.numero,
         elements: [
             Variable.SigCondicion,
             Variable.OpAndOr
         ]
     }, {
-        varaible: Variable.Condicion,
+        variable: Variable.Condicion,
         terminal: Terminal.not,
         elements: [
             Variable.SigCondicion,
             Variable.OpAndOr
         ]
     }, {
-        varaible: Variable.Condicion,
+        variable: Variable.Condicion,
         terminal: Terminal.corcheteOpen,
         elements: [
             Variable.SigCondicion,
@@ -787,13 +787,13 @@ const table: Array<Cell> = [
     },
     /* OpAndOr */
     {
-        varaible: Variable.OpAndOr,
+        variable: Variable.OpAndOr,
         terminal: Terminal.parentesisClose,
         elements: [
             Terminal.epsilon
         ]
     }, {
-        varaible: Variable.OpAndOr,
+        variable: Variable.OpAndOr,
         terminal: Terminal.or,
         elements: [
             Terminal.or,
@@ -801,7 +801,7 @@ const table: Array<Cell> = [
             Variable.OpAndOr
         ]
     }, {
-        varaible: Variable.OpAndOr,
+        variable: Variable.OpAndOr,
         terminal: Terminal.and,
         elements: [
             Terminal.and,
@@ -809,14 +809,14 @@ const table: Array<Cell> = [
             Variable.OpAndOr
         ]
     }, {
-        varaible: Variable.OpAndOr,
+        variable: Variable.OpAndOr,
         terminal: Terminal.corcheteClose,
         elements: [
             Terminal.epsilon
         ]
     },
     {
-        varaible: Variable.OpAndOr,
+        variable: Variable.OpAndOr,
         terminal: Terminal.epsilon,
         elements: [
             Terminal.epsilon
@@ -824,42 +824,42 @@ const table: Array<Cell> = [
     },
     /* SigCondicion */
     {
-        varaible: Variable.SigCondicion,
+        variable: Variable.SigCondicion,
         terminal: Terminal.id,
         elements: [
             Variable.Expresion,
             Variable.CierreExpresion
         ]
     }, {
-        varaible: Variable.SigCondicion,
+        variable: Variable.SigCondicion,
         terminal: Terminal.menos,
         elements: [
             Variable.Expresion,
             Variable.CierreExpresion
         ]
     }, {
-        varaible: Variable.SigCondicion,
+        variable: Variable.SigCondicion,
         terminal: Terminal.parentesisOpen,
         elements: [
             Variable.Expresion,
             Variable.CierreExpresion
         ]
     }, {
-        varaible: Variable.SigCondicion,
+        variable: Variable.SigCondicion,
         terminal: Terminal.numero,
         elements: [
             Variable.Expresion,
             Variable.CierreExpresion
         ]
     }, {
-        varaible: Variable.SigCondicion,
+        variable: Variable.SigCondicion,
         terminal: Terminal.not,
         elements: [
             Terminal.not,
             Variable.SigCondicion,
         ]
     }, {
-        varaible: Variable.SigCondicion,
+        variable: Variable.SigCondicion,
         terminal: Terminal.corcheteOpen,
         elements: [
             Terminal.corcheteOpen,
@@ -869,7 +869,7 @@ const table: Array<Cell> = [
     },
     /* CierreExpresion */
     {
-        varaible: Variable.CierreExpresion,
+        variable: Variable.CierreExpresion,
         terminal: Terminal.mayor,
         elements: [
             Terminal.mayor,
@@ -877,7 +877,7 @@ const table: Array<Cell> = [
             Variable.Operador1
         ]
     },{
-        varaible: Variable.CierreExpresion,
+        variable: Variable.CierreExpresion,
         terminal: Terminal.mayorIgual,
         elements: [
             Terminal.mayorIgual,
@@ -885,7 +885,7 @@ const table: Array<Cell> = [
             Variable.Operador1
         ]
     },{
-        varaible: Variable.CierreExpresion,
+        variable: Variable.CierreExpresion,
         terminal: Terminal.menorIgual,
         elements: [
             Terminal.menorIgual,
@@ -893,7 +893,7 @@ const table: Array<Cell> = [
             Variable.Operador1
         ]
     }, {
-        varaible: Variable.CierreExpresion,
+        variable: Variable.CierreExpresion,
         terminal: Terminal.menor,
         elements: [
             Terminal.menor,
@@ -901,7 +901,7 @@ const table: Array<Cell> = [
             Variable.Operador1
         ]
     },{
-        varaible: Variable.CierreExpresion,
+        variable: Variable.CierreExpresion,
         terminal: Terminal.igual,
         elements: [
             Terminal.igual,
@@ -911,7 +911,7 @@ const table: Array<Cell> = [
     },
     /* Lectura */
     {
-        varaible: Variable.Lectura,
+        variable: Variable.Lectura,
         terminal: Terminal.read,
         elements: [
             Terminal.read,
@@ -926,7 +926,7 @@ const table: Array<Cell> = [
     },
     /* Escritura */
     {
-        varaible: Variable.Escritura,
+        variable: Variable.Escritura,
         terminal: Terminal.write,
         elements: [
             Terminal.write,

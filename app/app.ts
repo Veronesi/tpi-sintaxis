@@ -38,7 +38,6 @@ let lexicalAnalizer = new LexicalAnalizer(data)
 while (!lexicalAnalizer.inputString.overflow()) {
   lexicalAnalizer.parser()
 }
-
 if (process.argv[3] == "lexicals")
   console.table(lexicalAnalizer.lexicals);
 
@@ -51,7 +50,6 @@ syntacticAnalyzer._analizer().then(tree => {
   const semanticAnalyzer = new SemanticAnalyzer(tree)
 
   const vars = semanticAnalyzer._analizer()
-
   const interpreter = new Interpreter(tree, vars)
 
   interpreter.start().then(() => {
